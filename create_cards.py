@@ -3,6 +3,7 @@
 import labels
 from reportlab.graphics import shapes
 import tweepy
+from git import Repo
 
 # path = "C:/Users/KalcikR/OneDrive/Robert/GitHub/world-control/"
 path = "C:/Onedrive/Robert/GitHub/world-control/"
