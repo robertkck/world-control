@@ -27,7 +27,7 @@ sheet = labels.Sheet(specs, draw_label, border=True)
 
 # Add a couple of labels.
 sheet.add_label("Hello")
-sheet.add_label("World")
+sheet.add_label("World Control")
 
 # We can also add each item from an iterable.
 sheet.add_labels(range(3, 25))
@@ -40,7 +40,16 @@ sheet.add_label("Oversized label here")
 sheet.save(path + 'basic.pdf')
 print("{0:d} label(s) output on {1:d} page(s).".format(sheet.label_count, sheet.page_count))
 
-
+# Upload to github
+repo = Repo(path)
+file_list = [
+    'basic.pdf'
+]
+commit_message = 'Add new pdf'
+repo.index.add(file_list)
+repo.index.commit(commit_message)
+origin = repo.remote('origin')
+origin.push('master')
 
 auth = tweepy.OAuthHandler("ayGzE6WOvZf5vLGTd5lrLpMes", "HscCoFzBB29nABNc69OIuLXWK6tigib9KPkfbP4gBxV7pvsbyo")
 auth.set_access_token("3929637676-UxwEFtaVR9dTLP5ZRyDdQMMOs0jwxyivsyFcuAZ", "fnEQ7JMF5yHZ7IfrYYpW9dxh4okXW7aCpvEpwERAd70V3")
