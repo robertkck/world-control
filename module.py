@@ -11,6 +11,7 @@ from reportlab.graphics import shapes
 from reportlab.lib.colors import PCMYKColor, PCMYKColorSep, Color, black, blue, red, transparent
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER
 stylesheet=getSampleStyleSheet()
 normalStyle = stylesheet['Normal']
 
@@ -80,13 +81,15 @@ def process_text(tweet):
         r = [textwrap.wrap(x, 30) for x in text]
     return(r)
     
-def text2pargraph(text):
+def text2paragraph(text):
     style_desc = getSampleStyleSheet()
     style_desc = style_desc["BodyText"]
     style_desc.alignment = TA_LEFT
+    # style_desc.spaceAfter = 30
+    style_desc.leading = 20
     style_effect = getSampleStyleSheet()
     style_effect = style_effect["BodyText"]
-    style_effect.alignment = TA_LEFT
+    style_effect.alignment = TA_CENTER
     style_effect.borderWidth = 1
     style_effect.borderColor = '#000000'
     
@@ -94,6 +97,10 @@ def text2pargraph(text):
     # t = worldcontrol[2].text
     if t.find("[")!=-1:
         desc = t[0:t.find("[")].strip()
+        if desc.find("\n")!=-1:
+            d = desc.split("\n")
+            d[0] = "<u>" + d[0] + "</u>"
+            desc = "<br />".join(d)
         effect = t[t.find("[")+1:t.find("]")]
         
         p_desc = Paragraph(desc, style_desc)

@@ -2,6 +2,12 @@ import tweepy
 import labels
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics  
+from reportlab.platypus import Paragraph, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.pdfgen import canvas
+from reportlab.rl_config import defaultPageSize
+from emojipy import Emoji
+from reportlab.lib import colors
 import pickle
 from PyPDF2 import PdfFileMerger
 import sys
@@ -11,7 +17,12 @@ from key import *
 from module import *
 import os
 cwd = os.getcwd()
+from reportlab.lib.pagesizes import A4, landscape, cm
+width, height = landscape(A4)
 
+def coord(x, y, unit=1):
+    x, y = x * unit, height - y * unit
+    return x, y
 
 # TODO
 # Syntax (Emoji + einfacher Kartentext)
@@ -54,9 +65,9 @@ specs = labels.Specification(297, 210, 5, 5, 59, 38.8, corner_radius=0, top_marg
 
 
 worldcontrol = api.search(q = "@truWorldControl")
-since_id = worldcontrol[1].id
+# since_id = worldcontrol[1].id
 # since_id = None
-# since_id = twitter_history[0]['id']
+since_id = twitter_history[0]['id']
 
 # twitter_history = []
 import time
@@ -76,12 +87,25 @@ while True:
                     print("Tweet does not include the #fakenewz Hashtag")
                 else:
                     print('\nBot found tweet by @' + tweet.user.screen_name + '. ' + 'Attempting to respond.')
-                    t = process_text(tweet)
-                    print(t)
+                    # t = process_text(tweet)
+                    t = text2paragraph(tweet.text)
                     _l = [t] + _l
-                    sheet = labels.Sheet(specs, draw_label, border=True)
-                    sheet.add_labels(_l[0:25])
-                    sheet.save('front.pdf')
+                    #sheet = labels.Sheet(specs, draw_label, border=True)
+                    #sheet.add_labels(_l[0:25])
+                    #sheet.save('front.pdf')
+                    cards = [_l[0:5],_l[5:10],_l[10:15],_l[15:20],_l[20:25]]
+                    #Create table
+                    table = Table(cards, 5.9 * cm, 3.88 * cm)
+                    table.setStyle(TableStyle([
+                                           ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+                                           ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+                                           ('VALIGN',(0,0),(-1,-1),'BOTTOM')
+                                           ]))                    
+                    canv = canvas.Canvas('front.pdf', pagesize = landscape(A4))                    
+                    table.wrapOn(canv, width, height)
+                    table.drawOn(canv, *coord(0.1, 20, cm))
+                    canv.save()
+                    # Merge front with back
                     merger = PdfFileMerger()
                     merger.append('front.pdf')
                     merger.append('wc_news_A4_back.pdf')

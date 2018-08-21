@@ -7,6 +7,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from emojipy import Emoji
 from reportlab.lib import colors
 import re
+from module import *
 
 import numpy as np
 from reportlab.platypus import Paragraph, Table, TableStyle
@@ -33,6 +34,10 @@ content = "It's emoji time <img src='images/air.png' valign='middle' width = '20
 
 p = Paragraph(content, styleN)
 # p = Paragraph('long paragraph', styleN)
+
+ps = []
+ps.append(p)
+ps.append(p)
 
 data= [[p,p,p,p,p]]*5
 
