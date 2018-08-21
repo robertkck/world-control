@@ -1,13 +1,17 @@
 import tweepy
 import labels
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics  
 import pickle
 from PyPDF2 import PdfFileMerger
 import sys
 # sys.path.append("C:/Users/KalcikR/OneDrive/Robert/GitHub/world-control")
+# sys.path.append("C:/OneDrive/Robert/GitHub/world-control")
 from key import *
 from module import *
 import os
 cwd = os.getcwd()
+
 
 # TODO
 # Syntax (Emoji + einfacher Kartentext)
@@ -27,6 +31,11 @@ cwd = os.getcwd()
 # path = "C:/Onedrive/Robert/GitHub/world-control/"
 # path = "C:/Users/KalcikR/Onedrive/Robert/GitHub/world-control/"
 
+# Load font
+ttfFile = 'font/icomoon.ttf'
+pdfmetrics.registerFont(TTFont("icomoon", ttfFile)) 
+
+# Authenticate bo
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
@@ -44,10 +53,10 @@ with open ('twitter_history', 'rb') as fp:
 specs = labels.Specification(297, 210, 5, 5, 59, 38.8, corner_radius=0, top_margin=7.5, left_margin = 1, row_gap = 0.25, column_gap = 0)
 
 
-# worldcontrol = api.search(q = "@truWorldControl")
-# since_id = worldcontrol[1].id
+worldcontrol = api.search(q = "@truWorldControl")
+since_id = worldcontrol[1].id
 # since_id = None
-since_id = twitter_history[0]['id']
+# since_id = twitter_history[0]['id']
 
 # twitter_history = []
 import time

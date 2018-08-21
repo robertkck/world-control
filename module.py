@@ -9,7 +9,10 @@ from git import Repo
 import textwrap
 from reportlab.graphics import shapes
 from reportlab.lib.colors import PCMYKColor, PCMYKColorSep, Color, black, blue, red, transparent
-
+from reportlab.platypus import Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+stylesheet=getSampleStyleSheet()
+normalStyle = stylesheet['Normal']
 
 def upload_pdf(file_list, repo_path):
     repo = Repo(repo_path)
@@ -34,10 +37,12 @@ def scale(drawing, scaling_factor):
  
 
 def draw_label(label, width, height, obj):
+    #  + ' <img src="images/air.png" valign="middle"/>',
     i = 90
     for t in obj[0]:
         for r in t:
             label.add(shapes.String(10, i, str(r), fontName="Helvetica", fontSize=9))
+            p = Paragraph("lol", normalStyle)
             i = i - 10
         i = i - 20
     
@@ -49,7 +54,7 @@ def draw_label(label, width, height, obj):
     i = 10
     # for t in obj[2]:
     for t in obj[1]:
-        label.add(shapes.String(10, i, str(t), fontName="Helvetica", fontSize=9))
+        label.add(shapes.String(10, i, '<b>' + str(t) + '</b>', fontName="Helvetica", fontSize=9))
         # label.add(drawing)
         i = i - 10
     
@@ -73,4 +78,31 @@ def process_text(tweet):
     else:
         text = t.split("\n")[1:4] 
         r = [textwrap.wrap(x, 30) for x in text]
+    return(r)
+    
+def text2pargraph(text):
+    style_desc = getSampleStyleSheet()
+    style_desc = style_desc["BodyText"]
+    style_desc.alignment = TA_LEFT
+    style_effect = getSampleStyleSheet()
+    style_effect = style_effect["BodyText"]
+    style_effect.alignment = TA_LEFT
+    style_effect.borderWidth = 1
+    style_effect.borderColor = '#000000'
+    
+    t = text.replace("@truWorldControl", "").replace("#fakenewz", "").strip()
+    # t = worldcontrol[2].text
+    if t.find("[")!=-1:
+        desc = t[0:t.find("[")].strip()
+        effect = t[t.find("[")+1:t.find("]")]
+        
+        p_desc = Paragraph(desc, style_desc)
+        p_effect = Paragraph(effect, style_effect)
+        
+        r = []
+        r.append(p_desc)
+        r.append(p_effect)
+        
+    else:
+        r = Paragraph(t, style_desc)
     return(r)
