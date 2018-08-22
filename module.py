@@ -11,6 +11,9 @@ from reportlab.graphics import shapes
 from reportlab.lib.colors import PCMYKColor, PCMYKColorSep, Color, black, blue, red, transparent
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.utils import simpleSplit 
+from reportlab.lib.pagesizes import A4, landscape, cm
+import emoji_unicode
 from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER
 stylesheet=getSampleStyleSheet()
 normalStyle = stylesheet['Normal']
@@ -82,19 +85,26 @@ def process_text(tweet):
     return(r)
     
 def text2paragraph(text):
+    t = text.replace("@truWorldControl", "").replace("#fakenewz", "").strip()
+    # t = worldcontrol[2].text
+    lines = simpleSplit(t, 'Helvetica', 12, 5.9*cm)
+    lineSpacing = 3.88*cm/(len(lines)) - 3
+    
     style_desc = getSampleStyleSheet()
     style_desc = style_desc["BodyText"]
     style_desc.alignment = TA_LEFT
     # style_desc.spaceAfter = 30
-    style_desc.leading = 20
+    style_desc.leading = lineSpacing
+    
     style_effect = getSampleStyleSheet()
     style_effect = style_effect["BodyText"]
+    # style_effect.fontSize = 16
+    style_effect.borderPadding = 2
     style_effect.alignment = TA_CENTER
     style_effect.borderWidth = 1
     style_effect.borderColor = '#000000'
     
-    t = text.replace("@truWorldControl", "").replace("#fakenewz", "").strip()
-    # t = worldcontrol[2].text
+    
     if t.find("[")!=-1:
         desc = t[0:t.find("[")].strip()
         if desc.find("\n")!=-1:
@@ -102,6 +112,7 @@ def text2paragraph(text):
             d[0] = "<u>" + d[0] + "</u>"
             desc = "<br />".join(d)
         effect = t[t.find("[")+1:t.find("]")]
+        effect = replace_emoji(effect)
         
         p_desc = Paragraph(desc, style_desc)
         p_effect = Paragraph(effect, style_effect)
@@ -113,3 +124,19 @@ def text2paragraph(text):
     else:
         r = Paragraph(t, style_desc)
     return(r)
+    
+def replace_emoji(text):
+    # t = text.encode('unicode-escape')
+    emoji_dict = {"1f34c":"arms", "SOUTH":"S" }
+    try:
+        t = emoji_unicode.replace(
+            text,
+            # lambda e: u"<img src='images/{filename}.svg' valign='middle' width = '20' height = '20' alt= '{raw}' />".format(filename=emoji_dict[e.code_points], raw=e.unicode)
+            lambda e: u"<img src='images/{filename}.png' valign='middle' width = '20' height = '20' />".format(filename=emoji_dict[e.code_points])
+        )
+    except KeyError:
+        t = text
+    return(t)
+
+
+

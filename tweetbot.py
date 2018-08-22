@@ -99,7 +99,9 @@ while True:
                     table.setStyle(TableStyle([
                                            ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
                                            ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+                                           ('BOTTOMPADDING', (0,0), (-1,-1), 10),
                                            ('VALIGN',(0,0),(-1,-1),'BOTTOM')
+                                           # ('SIZE', (0,0), (-1,-1), 20)
                                            ]))                    
                     canv = canvas.Canvas('front.pdf', pagesize = landscape(A4))                    
                     table.wrapOn(canv, width, height)
