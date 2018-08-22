@@ -85,6 +85,9 @@ def process_text(tweet):
     return(r)
     
 def text2paragraph(text):
+    font_file = 'font/Symbola_hint.ttf'
+    symbola_font = TTFont('Symbola', font_file)
+    pdfmetrics.registerFont(symbola_font)
     t = text.replace("@truWorldControl", "").replace("#fakenewz", "").strip()
     # t = worldcontrol[2].text
     lines = simpleSplit(t, 'Helvetica', 12, 5.9*cm)
@@ -93,12 +96,14 @@ def text2paragraph(text):
     style_desc = getSampleStyleSheet()
     style_desc = style_desc["BodyText"]
     style_desc.alignment = TA_LEFT
+    style_desc.fontName = 'Symbola'
     # style_desc.spaceAfter = 30
     style_desc.leading = lineSpacing
     
     style_effect = getSampleStyleSheet()
     style_effect = style_effect["BodyText"]
     # style_effect.fontSize = 16
+    style_effect.fontName = 'Symbola'
     style_effect.borderPadding = 2
     style_effect.alignment = TA_CENTER
     style_effect.borderWidth = 1

@@ -8,6 +8,9 @@ from reportlab.pdfgen import canvas
 from reportlab.rl_config import defaultPageSize
 from emojipy import Emoji
 from reportlab.lib import colors
+font_file = 'font/Symbola_hint.ttf'
+symbola_font = TTFont('Symbola', font_file)
+pdfmetrics.registerFont(symbola_font)
 import pickle
 from PyPDF2 import PdfFileMerger
 import sys
@@ -105,7 +108,7 @@ while True:
                                            ]))                    
                     canv = canvas.Canvas('front.pdf', pagesize = landscape(A4))                    
                     table.wrapOn(canv, width, height)
-                    table.drawOn(canv, *coord(0.1, 20, cm))
+                    table.drawOn(canv, *coord(0.1, 20.2, cm))
                     canv.save()
                     # Merge front with back
                     merger = PdfFileMerger()
