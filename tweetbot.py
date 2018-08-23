@@ -49,13 +49,14 @@ def coord(x, y, unit=1):
 # Change URL to world-control.net
 # Send email if loop breaks
 
+# "💶".encode('unicode-escape')
 
 # path = "C:/Onedrive/Robert/GitHub/world-control/"
 # path = "C:/Users/KalcikR/Onedrive/Robert/GitHub/world-control/"
 
 # Load font
-ttfFile = 'font/icomoon.ttf'
-pdfmetrics.registerFont(TTFont("icomoon", ttfFile)) 
+# ttfFile = 'font/icomoon.ttf'
+# pdfmetrics.registerFont(TTFont("icomoon", ttfFile)) 
 
 # Authenticate bo
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
@@ -66,11 +67,14 @@ if (not api):
     sys.exit(-1)
 
 
-with open ('outfile', 'rb') as fp:
-    _l = pickle.load(fp)
-
+# with open ('outfile', 'rb') as fp:
+#    _l = pickle.load(fp)
 with open ('twitter_history', 'rb') as fp:
     twitter_history = pickle.load(fp)
+
+_l = []
+for t in twitter_history:
+    _l.append(text2paragraph(t['text']))
 
 specs = labels.Specification(297, 210, 5, 5, 59, 38.8, corner_radius=0, top_margin=7.5, left_margin = 1, row_gap = 0.25, column_gap = 0)
 
@@ -128,8 +132,8 @@ while True:
                     m = "@%s Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf" % (tweet.user.screen_name) 
                     print(m)
                     api.update_status(m, tweet.id)
-                    with open('outfile', 'wb') as fp:
-                            pickle.dump(_l, fp)
+                    # with open('outfile', 'wb') as fp:
+                    #         pickle.dump(_l, fp)
                     time.sleep(10)
             except tweepy.TweepError as error:
                 print('\nError. Retweet not successful. Reason: ')
