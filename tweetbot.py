@@ -9,8 +9,16 @@ from reportlab.rl_config import defaultPageSize
 from emojipy import Emoji
 from reportlab.lib import colors
 font_file = 'font/Symbola_hint.ttf'
+# font_file = 'font/NotoSans-Regular.ttf'
+# font_file = 'font/NotoEmoji-Regular.ttf'
+# font_file = 'font/OpenSansEmoji.ttf'
+# open_font = TTFont('OpenSansEmoji', font_file)
+# emoji_font = TTFont('Noto Emoji', font_file)
 symbola_font = TTFont('Symbola', font_file)
+# noto_font = TTFont('Noto Sans', font_file)
 pdfmetrics.registerFont(symbola_font)
+# pdfmetrics.registerFont(emoji_font)
+# pdfmetrics.registerFont(open_font)
 import pickle
 from PyPDF2 import PdfFileMerger
 import sys

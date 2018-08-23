@@ -14,6 +14,17 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.utils import simpleSplit 
 from reportlab.lib.pagesizes import A4, landscape, cm
 import emoji_unicode
+font_file = 'font/Symbola_hint.ttf'
+# font_file = 'font/NotoSans-Regular.ttf'
+# font_file = 'font/NotoEmoji-Regular.ttf'
+# font_file = 'font/OpenSansEmoji.ttf'
+# open_font = TTFont('OpenSansEmoji', font_file)
+# emoji_font = TTFont('Noto Emoji', font_file)
+symbola_font = TTFont('Symbola', font_file)
+# noto_font = TTFont('Noto Sans', font_file)
+pdfmetrics.registerFont(symbola_font)
+# pdfmetrics.registerFont(emoji_font)
+# pdfmetrics.registerFont(open_font)
 from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER
 stylesheet=getSampleStyleSheet()
 normalStyle = stylesheet['Normal']
@@ -86,8 +97,16 @@ def process_text(tweet):
     
 def text2paragraph(text):
     font_file = 'font/Symbola_hint.ttf'
+    # font_file = 'font/NotoSans-Regular.ttf'
+    # font_file = 'font/NotoEmoji-Regular.ttf'
+    # font_file = 'font/OpenSansEmoji.ttf'
+    # open_font = TTFont('OpenSansEmoji', font_file)
+    # emoji_font = TTFont('Noto Emoji', font_file)
     symbola_font = TTFont('Symbola', font_file)
+    # noto_font = TTFont('Noto Sans', font_file)
     pdfmetrics.registerFont(symbola_font)
+    # pdfmetrics.registerFont(emoji_font)
+    # pdfmetrics.registerFont(open_font)
     t = text.replace("@truWorldControl", "").replace("#fakenewz", "").strip()
     # t = worldcontrol[2].text
     lines = simpleSplit(t, 'Helvetica', 12, 5.9*cm)
@@ -96,14 +115,14 @@ def text2paragraph(text):
     style_desc = getSampleStyleSheet()
     style_desc = style_desc["BodyText"]
     style_desc.alignment = TA_LEFT
-    style_desc.fontName = 'Symbola'
+    # style_desc.fontName = 'Noto Emoji'
     # style_desc.spaceAfter = 30
     style_desc.leading = lineSpacing
     
     style_effect = getSampleStyleSheet()
     style_effect = style_effect["BodyText"]
     # style_effect.fontSize = 16
-    style_effect.fontName = 'Symbola'
+    # style_effect.fontName = 'Noto Emoji'
     style_effect.borderPadding = 2
     style_effect.alignment = TA_CENTER
     style_effect.borderWidth = 1
@@ -140,7 +159,11 @@ def replace_emoji(text):
             lambda e: u"<img src='images/{filename}.png' valign='middle' width = '20' height = '20' />".format(filename=emoji_dict[e.code_points])
         )
     except KeyError:
-        t = text
+        t = emoji_unicode.replace(
+            text,
+            # lambda e: u"<img src='images/{filename}.svg' valign='middle' width = '20' height = '20' alt= '{raw}' />".format(filename=emoji_dict[e.code_points], raw=e.unicode)
+            lambda e: u"<font name=Symbola>{raw}</font>".format(raw=e.unicode)
+        )
     return(t)
 
 
