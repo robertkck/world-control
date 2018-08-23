@@ -36,9 +36,9 @@ from key import *
 from module import *
 import os
 cwd = os.getcwd()
-from reportlab.lib.pagesizes import A4, landscape, cm
+from reportlab.lib.pagesizes import A4, landscape
 width, height = landscape(A4)
-
+cm = 28.346456692913385
 def coord(x, y, unit=1):
     x, y = x * unit, height - y * unit
     return x, y

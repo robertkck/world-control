@@ -14,7 +14,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics  
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.utils import simpleSplit 
-from reportlab.lib.pagesizes import A4, landscape, cm
+from reportlab.lib.pagesizes import A4, landscape
+cm = 28.346456692913385
 import emoji_unicode
 font_file = 'font/Symbola_hint.ttf'
 # font_file = 'font/NotoSans-Regular.ttf'
