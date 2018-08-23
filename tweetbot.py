@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Aug 23 18:10:56 2018
+
+@author: KalcikR
+"""
+
+
 import tweepy
 import labels
 from reportlab.pdfbase.ttfonts import TTFont
