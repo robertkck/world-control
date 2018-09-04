@@ -83,7 +83,7 @@ for t in twitter_history:
 specs = labels.Specification(297, 210, 5, 5, 59, 38.8, corner_radius=0, top_margin=7.5, left_margin = 1, row_gap = 0.25, column_gap = 0)
 
 
-# worldcontrol = api.search(q = "@truWorldControl")
+worldcontrol = api.search(q = "@truWorldControl")
 # since_id = worldcontrol[1].id
 # since_id = None
 since_id = twitter_history[0]['id']
@@ -134,7 +134,7 @@ while True:
                     upload_pdf(["world-control.pdf"], cwd)
                     # tweet.retweet("Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf")
                     # m = "@%s Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf" % (tweet.user.screen_name) 
-                    m = "@%s BREAKING NEWS: Find your #fakenewz ready for mass production here: https://bit.ly/2PtbTN0" % (tweet.user.screen_name) 
+                    m = "@%s Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf" % (tweet.user.screen_name) 
                     print(m)
                     api.update_status(m, tweet.id)
                     # with open('outfile', 'wb') as fp:

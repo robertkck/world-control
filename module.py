@@ -15,8 +15,10 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.utils import simpleSplit 
 from reportlab.lib.pagesizes import A4, landscape
+import ftplib
 cm = 28.346456692913385
 import emoji_unicode
+import emoji
 font_file = 'font/Symbola_hint.ttf'
 # font_file = 'font/NotoSans-Regular.ttf'
 # font_file = 'font/NotoEmoji-Regular.ttf'
@@ -32,7 +34,28 @@ from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER
 stylesheet=getSampleStyleSheet()
 normalStyle = stylesheet['Normal']
 
+emoji_dict = {
+        '1f680':'arms', '1f52b':'arms', '2694':'arms', '1f3f9':'arms', '1f5e1':'arms',
+        "1f6e2":"oil",  "26fd":"oil",
+        "1f6e9":"air", "2708":"air", "1f6eb":"air", "1f6ec":"air",
+        "1f480":"skull", "2620":"skull",
+        '1f335':'bio', '1f333':'bio', 'f330 ':'bio', 'f95c ':'bio', 'f344 ':'bio', 'f966 ':'bio', 'f952 ':'bio', 'f336 ':'bio', 'f33d ':'bio', 'f955 ':'bio', 'f954 ':'bio', 'f346 ':'bio', 'f951 ':'bio', 'f965 ':'bio', 'f345 ':'bio', 'f95d ':'bio', 'f353 ':'bio', 'f352 ':'bio', 'f351 ':'bio', 'f350 ':'bio', 'f34f ':'bio', 'f34e ':'bio', 'f34d ':'bio', 'f34c ':'bio', 'f34b ':'bio', 'f34a ':'bio', 'f349 ':'bio', 'f348 ':'bio', 'f347 ':'bio', 
+        '1f3c6':'gold', '1f947':'gold', '1f3c5':'gold', '1f396':'gold', '1f3f5':'gold', '1f4b0':'gold', '1f48e':'gold',
+        '1f48a':'chem', '2697':'chem', '1f321':'chem', '1f489':'chem', '2623':'chem', '2622':'chem',
+        '1f579':'tech', '1f4f1':'tech', '1f4f2':'tech', '1f4be':'tech', '1f4bd':'tech', '1f4bb':'tech', '1f39a':'tech', '2699':'tech', 'fe0f':'tech',
+        '1f468-200d-1f393':'sage', '1f469-200d-1f393':'sage', '1f9d9-200d-2642':'sage', '1f9d9-200d-2640':'sage','1f535':'sage',
+        '1f534':'general', '1f468-200d-2708':'general', '1f469-200d-2708':'general', '1f46e':'general', 
+        '1f4b2':'yollo', '1f4b4':'yollo', '1f4b3':'yollo', '1f4b6':'yollo', '1f4b7':'yollo', '1f4b5':'yollo', '1f4b8':'yollo',
+        '1f468-200d-1f468-200d-1f466-200d-1f466':'corpz', '1f690':'corpz', '1f463':'corpz'
+}
+
 def upload_pdf(file_list, repo_path):
+    # Use ftp instead
+    # session = ftplib.FTP('example.com','username','password')
+    # file = open('cup.mp4','rb')                  # file to send
+    # session.storbinary('STOR '+'cup.mp4', file)     # send the file
+    # file.close()                                    # close file and FTP
+    # session.quit()
     repo = Repo(repo_path)
     commit_message = 'Add new pdf'
     repo.index.add(file_list)
@@ -159,20 +182,6 @@ def replace_emoji(text):
     # Würfel Icon
     # Figure icon
     # Alle bauen/roten icons für general/sage
-    emoji_dict = {
-            '1f680':'arms', '1f52b':'arms', '2694':'arms', '1f3f9':'arms', '1f5e1':'arms',
-            "1f6e2":"oil",  "26fd":"oil",
-            "1f6e9":"air", "2708":"air", "1f6eb":"air", "1f6ec":"air",
-            "1f480":"skull", "2620":"skull",
-            '1f335':'bio', '1f333':'bio', 'f330 ':'bio', 'f95c ':'bio', 'f344 ':'bio', 'f966 ':'bio', 'f952 ':'bio', 'f336 ':'bio', 'f33d ':'bio', 'f955 ':'bio', 'f954 ':'bio', 'f346 ':'bio', 'f951 ':'bio', 'f965 ':'bio', 'f345 ':'bio', 'f95d ':'bio', 'f353 ':'bio', 'f352 ':'bio', 'f351 ':'bio', 'f350 ':'bio', 'f34f ':'bio', 'f34e ':'bio', 'f34d ':'bio', 'f34c ':'bio', 'f34b ':'bio', 'f34a ':'bio', 'f349 ':'bio', 'f348 ':'bio', 'f347 ':'bio', 
-            '1f3c6':'gold', '1f947':'gold', '1f3c5':'gold', '1f396':'gold', '1f3f5':'gold', '1f4b0':'gold', '1f48e':'gold',
-            '1f48a':'chem', '2697':'chem', '1f321':'chem', '1f489':'chem', '2623':'chem', '2622':'chem',
-            '1f579':'tech', '1f4f1':'tech', '1f4f2':'tech', '1f4be':'tech', '1f4bd':'tech', '1f4bb':'tech', '1f39a':'tech', '2699':'tech', 'fe0f':'tech',
-            '1f468-200d-1f393':'sage', '1f469-200d-1f393':'sage', '1f9d9-200d-2642':'sage', '1f9d9-200d-2640':'sage','1f535':'sage',
-            '1f534':'general', '1f468-200d-2708':'general', '1f469-200d-2708':'general', '1f46e':'general', 
-            '1f4b2':'yollo', '1f4b4':'yollo', '1f4b3':'yollo', '1f4b6':'yollo', '1f4b7':'yollo', '1f4b5':'yollo', '1f4b8':'yollo',
-            '1f468-200d-1f468-200d-1f466-200d-1f466':'corpz', '1f690':'corpz', '1f463':'corpz'
-    }
     # Replace text
     # TODO Case insensitive
     icon = ['arms', 'oil', 'air', 'skull', 'bio', 'gold', 'chem', 'tech', 'sage', 'general', 'yollo', 'corpz']
@@ -195,5 +204,10 @@ def replace_emoji(text):
         )
     return(t)
 
+def print_emoji_dict(emoji_dict = emoji_dict):
+    for i in emoji_dict:
+        for j in i.split('-'):
+            print(chr(int(j, 16)))
+            # sval("u" + "'{}'".format(n))
 
 
