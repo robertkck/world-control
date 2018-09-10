@@ -30,6 +30,7 @@ pdfmetrics.registerFont(symbola_font)
 import pickle
 from PyPDF2 import PdfFileMerger
 import sys
+import pandas as pd
 # sys.path.append("C:/Users/KalcikR/OneDrive/Robert/GitHub/world-control")
 # sys.path.append("C:/OneDrive/Robert/GitHub/world-control")
 from key import *
@@ -76,14 +77,18 @@ if (not api):
 with open ('twitter_history', 'rb') as fp:
     twitter_history = pickle.load(fp)
 
+df = pd.DataFrame.from_csv('master.csv', encoding = "utf-8")
+
+
 _l = []
-for t in twitter_history:
-    _l.append(text2paragraph(t['text']))
+# for t in twitter_history:
+for t in df['full_text']:
+    _l.append(text2paragraph(t))
 
 specs = labels.Specification(297, 210, 5, 5, 59, 38.8, corner_radius=0, top_margin=7.5, left_margin = 1, row_gap = 0.25, column_gap = 0)
 
 
-# worldcontrol = api.search(q = "@truWorldControl")
+# worldcontrol = api.search(q = "@truWorldControl", tweet_mode='extended')
 # since_id = worldcontrol[1].id
 # since_id = None
 since_id = twitter_history[0]['id']
@@ -92,22 +97,25 @@ since_id = twitter_history[0]['id']
 import time
 while True:
     print("loop")
-    new_tweets = api.search(q = "@truWorldControl", since_id = since_id)
+    new_tweets = api.search(q = "@truWorldControl", since_id = since_id, tweet_mode='extended')
     if not new_tweets:
         print("No new tweet")
     else:
-        for tweet in tweepy.Cursor(api.search, q='@truWorldControl', since_id = since_id).items(5):
-            print("new tweet found: " + tweet.text)
+        for tweet in tweepy.Cursor(api.search, q='@truWorldControl', since_id = since_id, tweet_mode='extended').items(5):
+            print("new tweet found: " + tweet.full_text)
             twitter_history.insert(0, tweet._json)
             with open('twitter_history', 'wb') as fp:
                     pickle.dump(twitter_history, fp)
+            df = df.append(twitter_history[0], ignore_index = True)
+            df.to_csv('master.csv', encoding = 'utf-8')
+            
             try:
-                if "#fakenewz" not in tweet.text:
+                if "#fakenewz" not in tweet.full_text:
                     print("Tweet does not include the #fakenewz Hashtag")
                 else:
                     print('\nBot found tweet by @' + tweet.user.screen_name + '. ' + 'Attempting to respond.')
                     # t = process_text(tweet)
-                    t = text2paragraph(tweet.text)
+                    t = text2paragraph(tweet.full_text)
                     _l = [t] + _l
                     #sheet = labels.Sheet(specs, draw_label, border=True)
                     #sheet.add_labels(_l[0:25])
