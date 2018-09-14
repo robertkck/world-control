@@ -22,9 +22,23 @@ import emoji
 from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
+from oauth2client.service_account import ServiceAccountCredentials
+import gspread 
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
+scope = ['https://spreadsheets.google.com/feeds']
+store = file.Storage('token.json')
+creds = store.get()
+if not creds or creds.invalid:
+    flow = client.flow_from_clientsecrets('credentials.json', scope)
+    creds = tools.run_flow(flow, store)
+service = build('sheets', 'v4', http=creds.authorize(Http()))
+sheet = client.open("fakenewz").sheet1
+SPREADSHEET_ID = '1kHJmRvcfnIW38hbp8wpzbYh7iThsOrf04_C6PbBxhIQ'
+RANGE_NAME = 'Class Data!A2:E'
+result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
+                                            range=RANGE_NAME).execute()
+values = result.get('values', [])
 
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
