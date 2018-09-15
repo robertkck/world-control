@@ -64,7 +64,7 @@ normalStyle = stylesheet['Normal']
 emoji_dict = {
         '1f680':'arms', '1f52b':'arms', '2694':'arms', '1f3f9':'arms', '1f5e1':'arms',
         "1f6e2":"oil",  "26fd":"oil",
-        "1f6e9":"air", "2708":"air", "1f6eb":"air", "1f6ec":"air",
+        "1f6e9":"air", "2708":"air", "1f6eb":"airstrike", "1f6ec":"airlift",
         "1f480":"skull", "2620":"skull",
         '1f335':'bio', '1f333':'bio', 'f330 ':'bio', 'f95c ':'bio', 'f344 ':'bio', 'f966 ':'bio', 'f952 ':'bio', 'f336 ':'bio', 'f33d ':'bio', 'f955 ':'bio', 'f954 ':'bio', 'f346 ':'bio', 'f951 ':'bio', 'f965 ':'bio', 'f345 ':'bio', 'f95d ':'bio', 'f353 ':'bio', 'f352 ':'bio', 'f351 ':'bio', 'f350 ':'bio', 'f34f ':'bio', 'f34e ':'bio', 'f34d ':'bio', 'f34c ':'bio', 'f34b ':'bio', 'f34a ':'bio', 'f349 ':'bio', 'f348 ':'bio', 'f347 ':'bio', 
         '1f3c6':'gold', '1f947':'gold', '1f3c5':'gold', '1f396':'gold', '1f3f5':'gold', '1f4b0':'gold', '1f48e':'gold',
