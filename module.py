@@ -19,6 +19,8 @@ import ftplib
 cm = 28.346456692913385
 import emoji_unicode
 import emoji
+from emojipy import Emoji
+import re
 # from googleapiclient.discovery import build
 # from httplib2 import Http
 # from oauth2client import file, client, tools
@@ -76,31 +78,31 @@ emoji_dict = {
 
 
 
-def fetch_sheet():
-    """Shows basic usage of the Sheets API.
-    Prints values from a sample spreadsheet.
-    """
-    store = file.Storage('token.json')
-    creds = store.get()
-    if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
-        creds = tools.run_flow(flow, store)
-    service = build('sheets', 'v4', http=creds.authorize(Http()))
-
-    # Call the Sheets API
-    SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
-    RANGE_NAME = 'Class Data!A2:E'
-    result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
-                                                range=RANGE_NAME).execute()
-    values = result.get('values', [])
-
-    if not values:
-        print('No data found.')
-    else:
-        print('Name, Major:')
-        for row in values:
-            # Print columns A and E, which correspond to indices 0 and 4.
-            print('%s, %s' % (row[0], row[4]))
+#def fetch_sheet():
+#    """Shows basic usage of the Sheets API.
+#    Prints values from a sample spreadsheet.
+#    """
+#    store = file.Storage('token.json')
+#    creds = store.get()
+#    if not creds or creds.invalid:
+#        flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
+#        creds = tools.run_flow(flow, store)
+#    service = build('sheets', 'v4', http=creds.authorize(Http()))
+#
+#    # Call the Sheets API
+#    SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
+#    RANGE_NAME = 'Class Data!A2:E'
+#    result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
+#                                                range=RANGE_NAME).execute()
+#    values = result.get('values', [])
+#
+#    if not values:
+#        print('No data found.')
+#    else:
+#        print('Name, Major:')
+#        for row in values:
+#            # Print columns A and E, which correspond to indices 0 and 4.
+#            print('%s, %s' % (row[0], row[4]))
 
 
 def upload_pdf(file_list, repo_path):
@@ -189,7 +191,11 @@ def text2paragraph(text):
     pdfmetrics.registerFont(symbola_font)
     # pdfmetrics.registerFont(emoji_font)
     # pdfmetrics.registerFont(open_font)
-    t = text.replace("@truWorldControl", "").replace("#fakenewz", "").strip()
+    # t = text.replace("@truWorldControl", "").replace("#fakenewz", "").strip()
+    t = text
+    t = re.sub("(?i)@truworldcontrol", "", t)
+    t = re.sub("(?i)#fakenewz", "", t)
+    t = t.strip()
     # t = worldcontrol[2].text
     lines = simpleSplit(t, 'Helvetica', 12, 5.9*cm)
     lineSpacing = 3.88*cm/(len(lines)) - 3
@@ -210,28 +216,32 @@ def text2paragraph(text):
     style_effect.borderWidth = 1
     style_effect.borderColor = '#000000'
     
-    
+    # effect = re.search("\[(.*?)\]", t)
+    r = []
+    p_desc = []
+    p_effect = []
     if t.find("[")!=-1:
         desc = t[0:t.find("[")].strip()
-        if desc.find("\n")!=-1:
-            d = desc.split("\n")
-            d[0] = "<u>" + d[0] + "</u>"
-            desc = "<br />".join(d)
         effect = t[t.find("[")+1:t.find("]")]
-        effect = replace_emoji(effect)
+        effect_emoji = replace_emoji(effect, style_effect)
+        p_effect = Paragraph(effect_emoji, style_effect)
+    else: 
+        desc = t
+    
+    if desc.find("\n")!=-1:
+        d = desc.split("\n")
+        d[0] = "<u>" + d[0] + "</u>"
+        desc = "<br />".join(d)
         
-        p_desc = Paragraph(desc, style_desc)
-        p_effect = Paragraph(effect, style_effect)
-        
-        r = []
-        r.append(p_desc)
+    p_desc = Paragraph(desc, style_desc)
+            
+    r.append(p_desc)
+    if p_effect:
         r.append(p_effect)
         
-    else:
-        r = Paragraph(t, style_desc)
     return(r)
     
-def replace_emoji(text):
+def replace_emoji(effect, style):
     # t = text.encode('unicode-escape')
     # Würfel Icon
     # Figure icon
@@ -240,23 +250,41 @@ def replace_emoji(text):
     # TODO Case insensitive
     icon = ['arms', 'oil', 'air', 'skull', 'bio', 'gold', 'chem', 'tech', 'sage', 'general', 'yollo', 'corpz']
     for i in icon:
-        if text.find(i)!=-1:
-            text = text.replace(i, u"<img src='images/{filename}.png' valign='middle' width = '20' height = '20' />".format(filename = i))
+        effect = re.sub("(?i)" + i, i, effect)
+        if effect.find(i)!=-1:
+            effect = effect.replace(i, u"<img src='images/{filename}.png' valign='middle' width = '20' height = '20' />".format(filename = i))
     
     try:
         t = emoji_unicode.replace(
-            text,
+            effect,
             # lambda e: u"<img src='images/{filename}.svg' valign='middle' width = '20' height = '20' alt= '{raw}' />".format(filename=emoji_dict[e.code_points], raw=e.unicode)
             lambda e: u"<img src='images/{filename}.png' valign='middle' width = '20' height = '20' />".format(filename=emoji_dict[e.code_points])
         )
     except KeyError:
         print("Key Error")
-        t = emoji_unicode.replace(
-            text,
-            # lambda e: u"<img src='images/{filename}.svg' valign='middle' width = '20' height = '20' alt= '{raw}' />".format(filename=emoji_dict[e.code_points], raw=e.unicode)
-            lambda e: u"<font name=Symbola>{raw}</font>".format(raw=e.unicode)
-        )
+#        t = emoji_unicode.replace(
+#            text,
+#            # lambda e: u"<img src='images/{filename}.svg' valign='middle' width = '20' height = '20' alt= '{raw}' />".format(filename=emoji_dict[e.code_points], raw=e.unicode)
+#            lambda e: u"<font name=Symbola>{raw}</font>".format(raw=e.unicode)
+#        )
+        # t = replace_with_emoji_pdf(Emoji.to_image(text), style.fontSize)
+        t = replace_with_emoji_pdf(effect, style.fontSize)
     return(t)
+
+# Pdf doesn't need any unicode inside <image>'s alt attribute
+Emoji.unicode_alt = False
+
+
+def replace_with_emoji_pdf(effect, size):
+    """
+    Reportlab's Paragraph doesn't accept normal html <image> tag's attributes
+    like 'class', 'alt'. Its a little hack to remove those attrbs
+    """
+
+    effect = Emoji.to_image(effect)
+    effect = effect.replace('class="emojione " style="" ', 'height=%s width=%s' %
+                        (size, size))
+    return re.sub('alt="'+Emoji.shortcode_regexp+'"', '', effect)
 
 def print_emoji_dict(emoji_dict = emoji_dict):
     for i in emoji_dict:

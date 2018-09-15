@@ -140,7 +140,7 @@ while True:
                     merger.append('front.pdf')
                     merger.append('wc_news_A4_back.pdf')
                     merger.write('world-control.pdf')
-                    upload_pdf(["world-control.pdf"], cwd)
+                    upload_pdf(["world-control.pdf", "twitter_history", "master.xlsx"], cwd)
                     # tweet.retweet("Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf")
                     # m = "@%s Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf" % (tweet.user.screen_name) 
                     m = "@%s BREAKING NEWS: Find your #fakenewz ready for mass production here: https://bit.ly/2MwQqkC" % (tweet.user.screen_name) 
