@@ -220,14 +220,19 @@ def text2paragraph(text):
     r = []
     p_desc = []
     p_effect = []
+    
+    # Needs to be refactored
+    
     if t.find("[")!=-1:
         desc = t[0:t.find("[")].strip()
         effect = t[t.find("[")+1:t.find("]")]
         effect_emoji = replace_emoji(effect, style_effect)
+        effect_emoji = effect_emoji.replace("\n", "<br />")
         p_effect = Paragraph(effect_emoji, style_effect)
     else: 
         desc = t
     
+    desc = replace_with_emoji(desc, style_desc.fontSize)
     if desc.find("\n")!=-1:
         d = desc.split("\n")
         d[0] = "<u>" + d[0] + "</u>"
