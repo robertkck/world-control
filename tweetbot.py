@@ -117,11 +117,12 @@ while True:
                     print('\nBot found tweet by @' + tweet.user.screen_name + '. ' + 'Attempting to respond.')
                     # t = process_text(tweet)
                     t = text2paragraph(tweet.full_text)
-                    _l = [t] + _l
+                    _l = _l + [t]
                     #sheet = labels.Sheet(specs, draw_label, border=True)
                     #sheet.add_labels(_l[0:25])
                     #sheet.save('front.pdf')
-                    cards = [_l[0:5],_l[5:10],_l[10:15],_l[15:20],_l[20:25]]
+                    rev_l = list(reversed(_l))
+                    cards = [rev_l[0:5],rev_l[5:10],rev_l[10:15],rev_l[15:20],rev_l[20:25]]
                     #Create table
                     table = Table(cards, 5.9 * cm, 3.88 * cm)
                     table.setStyle(TableStyle([
@@ -143,7 +144,10 @@ while True:
                     upload_pdf(["world-control.pdf", "twitter_history", "master.xlsx"], cwd)
                     # tweet.retweet("Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf")
                     # m = "@%s Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf" % (tweet.user.screen_name) 
-                    m = "@%s BREAKING NEWS: Find your #fakenewz ready for mass production here: https://bit.ly/2MwQqkC" % (tweet.user.screen_name) 
+                    # Google Drive: https://docs.google.com/gview?url=https://github.com/robertkck/world-control/raw/master/world-control.pdf
+                    # Bitly: https://bit.ly/2PtbTN0
+                    # Bitly of Google Drive: https://bit.ly/2PtbTN0
+                    m = "@%s BREAKING NEWS: Find your #fakenewz ready for mass production here: https://bit.ly/2PtbTN0" % (tweet.user.screen_name) 
                     print(m)
                     api.update_status(m, tweet.id)
                     # with open('outfile', 'wb') as fp:

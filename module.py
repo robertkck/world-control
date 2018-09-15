@@ -255,9 +255,12 @@ def replace_emoji(effect, style):
     # TODO Case insensitive
     
     effect = effect.replace("<", u"<img src='images/arrow_left.png' valign='middle' width = '20' height = '20' />")
-    effect = effect.replace(">", u"<img src='images/arrow_right.png' valign='middle' width = '20' height = '20' />")
+    effect = effect.replace("&lt;", u"<img src='images/arrow_left.png' valign='middle' width = '20' height = '20' />")
     
-    icon = ['arms', 'oil', 'air', 'skull', 'bio', 'gold', 'chem', 'tech', 'sage', 'general', 'yollo', 'corpz']
+    effect = effect.replace(">", u"<img src='images/arrow_right.png' valign='middle' width = '20' height = '20' />")
+    effect = effect.replace("&gt;", u"<img src='images/arrow_right.png' valign='middle' width = '20' height = '20' />")
+    
+    icon = ['arms', 'oil', 'airlift', 'airstrike', 'skull', 'bio', 'gold', 'chem', 'tech', 'sage', 'general', 'yollo', 'corpz']
     for i in icon:
         effect = re.sub("(?i)" + i, i, effect)
         if effect.find(i)!=-1:
