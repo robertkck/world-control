@@ -73,7 +73,7 @@ emoji_dict = {
         '1f468-200d-1f393':'sage', '1f469-200d-1f393':'sage', '1f9d9-200d-2642':'sage', '1f9d9-200d-2640':'sage','1f535':'sage',
         '1f534':'general', '1f468-200d-2708':'general', '1f469-200d-2708':'general', '1f46e':'general', 
         '1f4b2':'yollo', '1f4b4':'yollo', '1f4b3':'yollo', '1f4b6':'yollo', '1f4b7':'yollo', '1f4b5':'yollo', '1f4b8':'yollo',
-        '1f468-200d-1f468-200d-1f466-200d-1f466':'corpz', '1f690':'corpz', '1f463':'corpz'
+        '1f468-200d-1f468-200d-1f466-200d-1f466':'corpz', '1f690':'corpz', '1f463':'corpz', '1f691':'corpz', '1f69b':'corpz', '1f697':'corpz', '1f68c':'corpz', '1f69a':'corpz', '1f68d':'corpz', '1f68e':'corpz'
 }
 
 
@@ -248,6 +248,10 @@ def replace_emoji(effect, style):
     # Alle bauen/roten icons für general/sage
     # Replace text
     # TODO Case insensitive
+    
+    effect = effect.replace("<", u"<img src='images/arrow_left.png' valign='middle' width = '20' height = '20' />")
+    effect = effect.replace(">", u"<img src='images/arrow_right.png' valign='middle' width = '20' height = '20' />")
+    
     icon = ['arms', 'oil', 'air', 'skull', 'bio', 'gold', 'chem', 'tech', 'sage', 'general', 'yollo', 'corpz']
     for i in icon:
         effect = re.sub("(?i)" + i, i, effect)
@@ -268,23 +272,27 @@ def replace_emoji(effect, style):
 #            lambda e: u"<font name=Symbola>{raw}</font>".format(raw=e.unicode)
 #        )
         # t = replace_with_emoji_pdf(Emoji.to_image(text), style.fontSize)
-        t = replace_with_emoji_pdf(effect, style.fontSize)
+        t = replace_with_emoji(effect, style.fontSize)
     return(t)
 
 # Pdf doesn't need any unicode inside <image>'s alt attribute
 Emoji.unicode_alt = False
 
 
-def replace_with_emoji_pdf(effect, size):
+def replace_with_emoji(effect, size):
     """
     Reportlab's Paragraph doesn't accept normal html <image> tag's attributes
     like 'class', 'alt'. Its a little hack to remove those attrbs
     """
-
-    effect = Emoji.to_image(effect)
-    effect = effect.replace('class="emojione " style="" ', 'height=%s width=%s' %
+    e = ""
+    for i, c in enumerate(effect):
+        if c in emoji.UNICODE_EMOJI:
+            e += Emoji.to_image(c)
+        else:
+            e += c
+    e = e.replace('class="emojione " style="" ', 'height=%s width=%s' %
                         (size, size))
-    return re.sub('alt="'+Emoji.shortcode_regexp+'"', '', effect)
+    return re.sub('alt="'+Emoji.shortcode_regexp+'"', '', e)
 
 def print_emoji_dict(emoji_dict = emoji_dict):
     for i in emoji_dict:
