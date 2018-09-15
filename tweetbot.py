@@ -77,8 +77,8 @@ if (not api):
 with open ('twitter_history', 'rb') as fp:
     twitter_history = pickle.load(fp)
 
-df = pd.DataFrame.from_csv('master.csv', encoding = "utf-8")
-
+# df = pd.DataFrame.from_csv('master.csv', encoding = "utf-8")
+df = pd.read_excel('master.xlsx')
 
 _l = []
 # for t in twitter_history:
@@ -107,7 +107,8 @@ while True:
             with open('twitter_history', 'wb') as fp:
                     pickle.dump(twitter_history, fp)
             df = df.append(twitter_history[0], ignore_index = True)
-            df.to_csv('master.csv', encoding = 'utf-8')
+            # df.to_csv('master.csv', encoding = 'utf-8')
+            df.to_excel('master.xlsx')
             
             try:
                 if "#fakenewz" not in tweet.full_text:
