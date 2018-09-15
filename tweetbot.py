@@ -146,8 +146,8 @@ while True:
                     # m = "@%s Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf" % (tweet.user.screen_name) 
                     # Google Drive: https://docs.google.com/gview?url=https://github.com/robertkck/world-control/raw/master/world-control.pdf
                     # Bitly: https://bit.ly/2PtbTN0
-                    # Bitly of Google Drive: https://bit.ly/2PtbTN0
-                    m = "@%s BREAKING NEWS: Find your #fakenewz ready for mass production here: https://bit.ly/2PtbTN0" % (tweet.user.screen_name) 
+                    # Shortened Google Drive: https://goo.gl/8xBSZn
+                    m = "@%s BREAKING NEWS: Find your #fakenewz ready for mass production here: https://goo.gl/8xBSZn" % (tweet.user.screen_name) 
                     print(m)
                     api.update_status(m, tweet.id)
                     # with open('outfile', 'wb') as fp:
