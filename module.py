@@ -125,7 +125,7 @@ def upload_ftp(filename, ftp_user, ftp_password):
     #domain name or server ip:
     ftp = FTP('files.000webhost.com')
     ftp.login(user=ftp_user, passwd = ftp_password)
-    ftp.storbinary('STOR '+ 'web/' + filename, open(filename, 'rb'))
+    ftp.storbinary('STOR '+ 'public_html/web/' + filename, open(filename, 'rb'))
     ftp.quit()
 
 def scale(drawing, scaling_factor):
@@ -188,7 +188,7 @@ def draw_label(label, width, height, obj):
 
 def text2paragraph(text):
     #TODO If you dont find an effect, still work on the description
-    #TODO Icons can also be mentioned in the description
+    #TODO Icons can also be mentioned in the description --> No because Golden would change to emoji
     font_file = 'font/Symbola_hint.ttf'
     # font_file = 'font/NotoSans-Regular.ttf'
     # font_file = 'font/NotoEmoji-Regular.ttf'
@@ -206,7 +206,7 @@ def text2paragraph(text):
     t = re.sub("(?i)#fakenewz", "", t)
     t = t.strip()
     # t = worldcontrol[2].text
-    lines = simpleSplit(t, 'Helvetica', 12, 5.9*cm)
+    lines = simpleSplit(t, 'Helvetica', 12, 6.5*cm)
     lineSpacing = 3.88*cm/(len(lines)) - 3
 
     style_desc = getSampleStyleSheet()
@@ -234,9 +234,9 @@ def text2paragraph(text):
 
     if t.find("[")!=-1:
         desc = t[0:t.find("[")].strip()
-        effect = t[t.find("[")+1:t.find("]")].upper()
+        effect = t[t.find("[")+1:t.find("]")]
         effect_emoji = replace_emoji(effect, style_effect)
-        effect_emoji = effect_emoji.replace("\n", "<br />")
+        effect_emoji = effect_emoji.replace("\n", "<br />").upper()
         p_effect = Paragraph(effect_emoji, style_effect)
     else:
         desc = t
