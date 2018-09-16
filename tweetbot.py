@@ -150,7 +150,7 @@ while True:
                     # Shortened Google Drive: https://goo.gl/8xBSZn
                     # 000: https://bit.ly/2xgnGaJ
                     # 000: https://goo.gl/fdVavF
-                    m = "@%s BREAKING NEWS: Find your #fakenewz ready for mass production here: https://goo.gl/fdVavF" % (tweet.user.screen_name)
+                    m = "@%s BREAKING NEWS: Find your #fakenewz ready for mass production here: https://goo.gl/7Jqy81" % (tweet.user.screen_name)
                     print(m)
                     api.update_status(m, tweet.id)
                     # with open('outfile', 'wb') as fp:
