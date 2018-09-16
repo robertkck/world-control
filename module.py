@@ -236,7 +236,7 @@ def text2paragraph(text):
         desc = t[0:t.find("[")].strip()
         effect = t[t.find("[")+1:t.find("]")]
         effect_emoji = replace_emoji(effect, style_effect)
-        effect_emoji = effect_emoji.replace("\n", "<br />").upper()
+        effect_emoji = effect_emoji.replace("\n", "<br />")
         p_effect = Paragraph(effect_emoji, style_effect)
     else:
         desc = t
@@ -265,9 +265,11 @@ def replace_emoji(effect, style):
 
     effect = effect.replace("<", u"<img src='images/arrow_left.png' valign='middle' width = '15' height = '15' />")
     effect = effect.replace("&lt;", u"<img src='images/arrow_left.png' valign='middle' width = '15' height = '15' />")
+    effect = effect.replace("&LT;", u"<img src='images/arrow_left.png' valign='middle' width = '15' height = '15' />")
 
     effect = effect.replace(">", u"<img src='images/arrow_right.png' valign='middle' width = '15' height = '15' />")
     effect = effect.replace("&gt;", u"<img src='images/arrow_right.png' valign='middle' width = '15' height = '15' />")
+    effect = effect.replace("&GT;", u"<img src='images/arrow_right.png' valign='middle' width = '15' height = '15' />")
 
     icon = ['arms', 'oil', 'airlift', 'airstrike', 'skull', 'bio', 'gold', 'chem', 'tech', 'sage', 'general', 'yollo', 'corpz']
     for i in icon:
