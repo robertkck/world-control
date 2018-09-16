@@ -142,7 +142,7 @@ while True:
                     merger.append('wc_news_A4_back.pdf')
                     merger.write('wc_newz.pdf')
                     # upload_pdf(["wc_newz.pdf", "twitter_history", "master.xlsx"], cwd)
-                    upload_ftp("wc_newz.pdf")
+                    upload_ftp("wc_newz.pdf", , ftp_user, ftp_password)
                     # tweet.retweet("Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf")
                     # m = "@%s Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf" % (tweet.user.screen_name)
                     # Google Drive: https://docs.google.com/gview?url=https://github.com/robertkck/world-control/raw/master/world-control.pdf

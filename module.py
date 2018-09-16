@@ -4,7 +4,6 @@ Created on Fri Aug  3 15:07:43 2018
 
 @author: KalcikR
 """
-import key
 from git import Repo
 import textwrap
 from reportlab.graphics import shapes
@@ -122,7 +121,7 @@ def upload_pdf(file_list, repo_path):
     origin = repo.remote('origin')
     origin.push('master')
 
-def upload_ftp(filename):
+def upload_ftp(filename, ftp_user, ftp_password):
     #domain name or server ip:
     ftp = FTP('files.000webhost.com')
     ftp.login(user=ftp_user, passwd = ftp_password)
@@ -173,19 +172,19 @@ def draw_label(label, width, height, obj):
 
 # t = _l[0] # worldcontrol[0]
 # with open(fName, 'w') as f:
-def process_text(tweet):
-    t = tweet.text.replace("@truWorldControl", "").replace("#fakenewz", "").strip()
-    # t = worldcontrol[2].text
-    if t.find("[")!=-1:
-        desc = t[0:t.find("[")].strip().split("\n")
-        desc = [textwrap.wrap(x, 30) for x in desc]
-        effect = t[t.find("[")+1:t.find("]")]
-        effect = textwrap.wrap(effect, 30)
-        r = [desc, effect]
-    else:
-        text = t.split("\n")[1:4]
-        r = [textwrap.wrap(x, 30) for x in text]
-    return(r)
+#def process_text(tweet):
+#    t = tweet.text.replace("@truWorldControl", "").replace("#fakenewz", "").strip()
+#    # t = worldcontrol[2].text
+#    if t.find("[")!=-1:
+#        desc = t[0:t.find("[")].strip().split("\n")
+#        desc = [textwrap.wrap(x, 30) for x in desc]
+#        effect = t[t.find("[")+1:t.find("]")]
+#        effect = textwrap.wrap(effect, 30)
+#        r = [desc, effect]
+#    else:
+#        text = t.split("\n")[1:4]
+#        r = [textwrap.wrap(x, 30) for x in text]
+#    return(r)
 
 def text2paragraph(text):
     #TODO If you dont find an effect, still work on the description
@@ -235,7 +234,7 @@ def text2paragraph(text):
 
     if t.find("[")!=-1:
         desc = t[0:t.find("[")].strip()
-        effect = t[t.find("[")+1:t.find("]")]
+        effect = t[t.find("[")+1:t.find("]")].upper()
         effect_emoji = replace_emoji(effect, style_effect)
         effect_emoji = effect_emoji.replace("\n", "<br />")
         p_effect = Paragraph(effect_emoji, style_effect)
