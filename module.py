@@ -11,9 +11,9 @@ from reportlab.graphics import shapes
 from reportlab.lib.colors import PCMYKColor, PCMYKColorSep, Color, black, blue, red, transparent
 from reportlab.platypus import Paragraph
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.pdfbase import pdfmetrics  
+from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib.utils import simpleSplit 
+from reportlab.lib.utils import simpleSplit
 from reportlab.lib.pagesizes import A4, landscape
 import ftplib
 cm = 28.346456692913385
@@ -21,11 +21,14 @@ import emoji_unicode
 import emoji
 from emojipy import Emoji
 import re
+from ftplib import FTP
+
+
 # from googleapiclient.discovery import build
 # from httplib2 import Http
 # from oauth2client import file, client, tools
 # from oauth2client.service_account import ServiceAccountCredentials
-# import gspread 
+# import gspread
 
 # If modifying these scopes, delete the file token.json.
 #scope = ['https://spreadsheets.google.com/feeds']
@@ -66,12 +69,12 @@ emoji_dict = {
         "1f6e2":"oil",  "26fd":"oil",
         "1f6e9":"air", "2708":"air", "1f6eb":"airstrike", "1f6ec":"airlift",
         "1f480":"skull", "2620":"skull",
-        '1f335':'bio', '1f333':'bio', 'f330 ':'bio', 'f95c ':'bio', 'f344 ':'bio', 'f966 ':'bio', 'f952 ':'bio', 'f336 ':'bio', 'f33d ':'bio', 'f955 ':'bio', 'f954 ':'bio', 'f346 ':'bio', 'f951 ':'bio', 'f965 ':'bio', 'f345 ':'bio', 'f95d ':'bio', 'f353 ':'bio', 'f352 ':'bio', 'f351 ':'bio', 'f350 ':'bio', 'f34f ':'bio', 'f34e ':'bio', 'f34d ':'bio', 'f34c ':'bio', 'f34b ':'bio', 'f34a ':'bio', 'f349 ':'bio', 'f348 ':'bio', 'f347 ':'bio', 
+        '1f335':'bio', '1f333':'bio', 'f330 ':'bio', 'f95c ':'bio', 'f344 ':'bio', 'f966 ':'bio', 'f952 ':'bio', 'f336 ':'bio', 'f33d ':'bio', 'f955 ':'bio', 'f954 ':'bio', 'f346 ':'bio', 'f951 ':'bio', 'f965 ':'bio', 'f345 ':'bio', 'f95d ':'bio', 'f353 ':'bio', 'f352 ':'bio', 'f351 ':'bio', 'f350 ':'bio', 'f34f ':'bio', 'f34e ':'bio', 'f34d ':'bio', 'f34c ':'bio', 'f34b ':'bio', 'f34a ':'bio', 'f349 ':'bio', 'f348 ':'bio', 'f347 ':'bio',
         '1f3c6':'gold', '1f947':'gold', '1f3c5':'gold', '1f396':'gold', '1f3f5':'gold', '1f4b0':'gold', '1f48e':'gold',
         '1f48a':'chem', '2697':'chem', '1f321':'chem', '1f489':'chem', '2623':'chem', '2622':'chem',
         '1f579':'tech', '1f4f1':'tech', '1f4f2':'tech', '1f4be':'tech', '1f4bd':'tech', '1f4bb':'tech', '1f39a':'tech', '2699':'tech', 'fe0f':'tech',
         '1f468-200d-1f393':'sage', '1f469-200d-1f393':'sage', '1f9d9-200d-2642':'sage', '1f9d9-200d-2640':'sage','1f535':'sage',
-        '1f534':'general', '1f468-200d-2708':'general', '1f469-200d-2708':'general', '1f46e':'general', 
+        '1f534':'general', '1f468-200d-2708':'general', '1f469-200d-2708':'general', '1f46e':'general',
         '1f4b2':'yollo', '1f4b4':'yollo', '1f4b3':'yollo', '1f4b6':'yollo', '1f4b7':'yollo', '1f4b5':'yollo', '1f4b8':'yollo',
         '1f468-200d-1f468-200d-1f466-200d-1f466':'corpz', '1f690':'corpz', '1f463':'corpz', '1f691':'corpz', '1f69b':'corpz', '1f697':'corpz', '1f68c':'corpz', '1f69a':'corpz', '1f68d':'corpz', '1f68e':'corpz'
 }
@@ -119,6 +122,13 @@ def upload_pdf(file_list, repo_path):
     origin = repo.remote('origin')
     origin.push('master')
 
+def upload_ftp(filename):
+    #domain name or server ip:
+    ftp = FTP('files.000webhost.com')
+    ftp.login(user=ftp_user, passwd = ftp_password)
+    ftp.storbinary('STOR '+ 'web/' + filename, open(filename, 'rb'))
+    ftp.quit()
+
 def scale(drawing, scaling_factor):
     """
     Scale a reportlab.graphics.shapes.Drawing()
@@ -126,12 +136,12 @@ def scale(drawing, scaling_factor):
     """
     scaling_x = scaling_factor
     scaling_y = scaling_factor
- 
+
     drawing.width = drawing.minWidth() * scaling_x
     drawing.height = drawing.height * scaling_y
     drawing.scale(scaling_x, scaling_y)
     return drawing
- 
+
 
 def draw_label(label, width, height, obj):
     #  + ' <img src="images/air.png" valign="middle"/>',
@@ -142,19 +152,19 @@ def draw_label(label, width, height, obj):
             p = Paragraph("lol", normalStyle)
             i = i - 10
         i = i - 20
-    
+
     # i = 50
     # for t in obj[1]:
     #    label.add(shapes.String(10, i, str(t), fontName="Helvetica", fontSize=9))
     #    i = i - 10
-    
+
     i = 10
     # for t in obj[2]:
     for t in obj[1]:
         label.add(shapes.String(10, i, '<b>' + str(t) + '</b>', fontName="Helvetica", fontSize=9))
         # label.add(drawing)
         i = i - 10
-    
+
     s = shapes.Rect(5, 8, 150, 11, fill = True)
     s.fillColor = transparent
     label.add(s)
@@ -173,10 +183,10 @@ def process_text(tweet):
         effect = textwrap.wrap(effect, 30)
         r = [desc, effect]
     else:
-        text = t.split("\n")[1:4] 
+        text = t.split("\n")[1:4]
         r = [textwrap.wrap(x, 30) for x in text]
     return(r)
-    
+
 def text2paragraph(text):
     #TODO If you dont find an effect, still work on the description
     #TODO Icons can also be mentioned in the description
@@ -199,14 +209,14 @@ def text2paragraph(text):
     # t = worldcontrol[2].text
     lines = simpleSplit(t, 'Helvetica', 12, 5.9*cm)
     lineSpacing = 3.88*cm/(len(lines)) - 3
-    
+
     style_desc = getSampleStyleSheet()
     style_desc = style_desc["BodyText"]
     style_desc.alignment = TA_LEFT
     # style_desc.fontName = 'Noto Emoji'
     # style_desc.spaceAfter = 30
     style_desc.leading = lineSpacing
-    
+
     style_effect = getSampleStyleSheet()
     style_effect = style_effect["BodyText"]
     # style_effect.fontSize = 16
@@ -215,37 +225,37 @@ def text2paragraph(text):
     style_effect.alignment = TA_CENTER
     style_effect.borderWidth = 1
     style_effect.borderColor = '#000000'
-    
+
     # effect = re.search("\[(.*?)\]", t)
     r = []
     p_desc = []
     p_effect = []
-    
+
     # Needs to be refactored
-    
+
     if t.find("[")!=-1:
         desc = t[0:t.find("[")].strip()
         effect = t[t.find("[")+1:t.find("]")]
         effect_emoji = replace_emoji(effect, style_effect)
         effect_emoji = effect_emoji.replace("\n", "<br />")
         p_effect = Paragraph(effect_emoji, style_effect)
-    else: 
+    else:
         desc = t
-    
+
     desc = replace_with_emoji(desc, style_desc.fontSize)
     if desc.find("\n")!=-1:
         d = desc.split("\n")
         d[0] = "<u>" + d[0] + "</u>"
         desc = "<br />".join(d)
-        
+
     p_desc = Paragraph(desc, style_desc)
-            
+
     r.append(p_desc)
     if p_effect:
         r.append(p_effect)
-        
+
     return(r)
-    
+
 def replace_emoji(effect, style):
     # t = text.encode('unicode-escape')
     # Würfel Icon
@@ -253,19 +263,19 @@ def replace_emoji(effect, style):
     # Alle bauen/roten icons für general/sage
     # Replace text
     # TODO Case insensitive
-    
-    effect = effect.replace("<", u"<img src='images/arrow_left.png' valign='middle' width = '20' height = '20' />")
-    effect = effect.replace("&lt;", u"<img src='images/arrow_left.png' valign='middle' width = '20' height = '20' />")
-    
-    effect = effect.replace(">", u"<img src='images/arrow_right.png' valign='middle' width = '20' height = '20' />")
-    effect = effect.replace("&gt;", u"<img src='images/arrow_right.png' valign='middle' width = '20' height = '20' />")
-    
+
+    effect = effect.replace("<", u"<img src='images/arrow_left.png' valign='middle' width = '15' height = '15' />")
+    effect = effect.replace("&lt;", u"<img src='images/arrow_left.png' valign='middle' width = '15' height = '15' />")
+
+    effect = effect.replace(">", u"<img src='images/arrow_right.png' valign='middle' width = '15' height = '15' />")
+    effect = effect.replace("&gt;", u"<img src='images/arrow_right.png' valign='middle' width = '15' height = '15' />")
+
     icon = ['arms', 'oil', 'airlift', 'airstrike', 'skull', 'bio', 'gold', 'chem', 'tech', 'sage', 'general', 'yollo', 'corpz']
     for i in icon:
         effect = re.sub("(?i)" + i, i, effect)
         if effect.find(i)!=-1:
             effect = effect.replace(i, u"<img src='images/{filename}.png' valign='middle' width = '20' height = '20' />".format(filename = i))
-    
+
     try:
         t = emoji_unicode.replace(
             effect,
@@ -307,5 +317,3 @@ def print_emoji_dict(emoji_dict = emoji_dict):
         for j in i.split('-'):
             print(chr(int(j, 16)))
             # sval("u" + "'{}'".format(n))
-
-

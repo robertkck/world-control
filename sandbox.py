@@ -27,7 +27,7 @@ def coord(x, y, unit=1):
 
 # Texts
 content = "It's emoji time <img src='images/air.png' valign='middle' width = '20' height = '20' /> \U0001F61C. Let's add some cool emotions \U0001F48F \u270C. And some more \u2764 \U0001F436"
-
+print(content)
 # styles["Title"].fontName = 'Helvetica'
 # style = styles["Title"]
 # content = replace_with_emoji_pdf(Emoji.to_image(pdf_content), style.fontSize)
@@ -62,3 +62,7 @@ table.wrapOn(canv, width, height)
 table.drawOn(canv, *coord(0.1, 20, cm))
 
 canv.save()
+
+
+#######
+

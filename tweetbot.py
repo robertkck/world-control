@@ -9,7 +9,7 @@ Created on Thu Aug 23 18:10:56 2018
 import tweepy
 import labels
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.pdfbase import pdfmetrics  
+from reportlab.pdfbase import pdfmetrics
 from reportlab.platypus import Paragraph, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfgen import canvas
@@ -61,7 +61,7 @@ def coord(x, y, unit=1):
 
 # Load font
 # ttfFile = 'font/icomoon.ttf'
-# pdfmetrics.registerFont(TTFont("icomoon", ttfFile)) 
+# pdfmetrics.registerFont(TTFont("icomoon", ttfFile))
 
 # Authenticate bo
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
@@ -109,7 +109,7 @@ while True:
             df = df.append(twitter_history[0], ignore_index = True)
             # df.to_csv('master.csv', encoding = 'utf-8')
             df.to_excel('master.xlsx')
-            
+
             try:
                 if "#fakenewz" not in tweet.full_text:
                     print("Tweet does not include the #fakenewz Hashtag")
@@ -131,8 +131,8 @@ while True:
                                            ('BOTTOMPADDING', (0,0), (-1,-1), 10),
                                            ('VALIGN',(0,0),(-1,-1),'BOTTOM')
                                            # ('SIZE', (0,0), (-1,-1), 20)
-                                           ]))                    
-                    canv = canvas.Canvas('front.pdf', pagesize = landscape(A4))                    
+                                           ]))
+                    canv = canvas.Canvas('front.pdf', pagesize = landscape(A4))
                     table.wrapOn(canv, width, height)
                     table.drawOn(canv, *coord(0.1, 20.2, cm))
                     canv.save()
@@ -140,14 +140,16 @@ while True:
                     merger = PdfFileMerger()
                     merger.append('front.pdf')
                     merger.append('wc_news_A4_back.pdf')
-                    merger.write('world-control.pdf')
-                    upload_pdf(["world-control.pdf", "twitter_history", "master.xlsx"], cwd)
+                    merger.write('wc_newz.pdf')
+                    # upload_pdf(["wc_newz.pdf", "twitter_history", "master.xlsx"], cwd)
+                    upload_ftp("wc_newz.pdf")
                     # tweet.retweet("Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf")
-                    # m = "@%s Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf" % (tweet.user.screen_name) 
+                    # m = "@%s Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf" % (tweet.user.screen_name)
                     # Google Drive: https://docs.google.com/gview?url=https://github.com/robertkck/world-control/raw/master/world-control.pdf
                     # Bitly: https://bit.ly/2PtbTN0
                     # Shortened Google Drive: https://goo.gl/8xBSZn
-                    m = "@%s BREAKING NEWS: Find your #fakenewz ready for mass production here: https://goo.gl/8xBSZn" % (tweet.user.screen_name) 
+                    # 000: https://bit.ly/2xgnGaJ
+                    m = "@%s BREAKING NEWS: Find your #fakenewz ready for mass production here: https://bit.ly/2xgnGaJ" % (tweet.user.screen_name)
                     print(m)
                     api.update_status(m, tweet.id)
                     # with open('outfile', 'wb') as fp:
