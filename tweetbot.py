@@ -109,14 +109,21 @@ while True:
             df = df.append(twitter_history[0], ignore_index = True)
             # df.to_csv('master.csv', encoding = 'utf-8')
             df.to_excel('master.xlsx')
-
+            
             try:
                 if "#fakenewz" not in tweet.full_text:
                     print("Tweet does not include the #fakenewz Hashtag")
                 else:
                     print('\nBot found tweet by @' + tweet.user.screen_name + '. ' + 'Attempting to respond.')
                     # t = process_text(tweet)
-                    t = text2paragraph(tweet.full_text)
+                    for i in range(0,100):
+                        while True:
+                            try: 
+                                t = text2paragraph(tweet.full_text)
+                            except:
+                                continue
+                            break
+                    
                     _l = _l + [t]
                     #sheet = labels.Sheet(specs, draw_label, border=True)
                     #sheet.add_labels(_l[0:25])
@@ -159,6 +166,7 @@ while True:
             except tweepy.TweepError as error:
                 print('\nError. Retweet not successful. Reason: ')
                 print(error.reason)
+                
             except StopIteration:
                 break
         since_id = twitter_history[0]['id']
