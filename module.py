@@ -124,8 +124,8 @@ def upload_pdf(file_list, repo_path):
 def upload_ftp(filename, ftp_user, ftp_password):
     #domain name or server ip:
     ftp = FTP('files.000webhost.com')
-    ftp.login(user=ftp_user, passwd = ftp_password)
-    ftp.storbinary('STOR '+ 'public_html/web/' + filename, open(filename, 'rb'))
+    print(ftp.login(user=ftp_user, passwd = ftp_password))
+    print(ftp.storbinary('STOR '+ 'public_html/web/' + filename, open(filename, 'rb')))
     ftp.quit()
 
 def scale(drawing, scaling_factor):
@@ -206,15 +206,12 @@ def text2paragraph(text):
     t = re.sub("(?i)#fakenewz", "", t)
     t = t.strip()
     # t = worldcontrol[2].text
-    lines = simpleSplit(t, 'Helvetica', 12, 6.5*cm)
-    lineSpacing = 3.88*cm/(len(lines)) - 3
-
+    
     style_desc = getSampleStyleSheet()
     style_desc = style_desc["BodyText"]
     style_desc.alignment = TA_LEFT
     # style_desc.fontName = 'Noto Emoji'
     # style_desc.spaceAfter = 30
-    style_desc.leading = lineSpacing
 
     style_effect = getSampleStyleSheet()
     style_effect = style_effect["BodyText"]
@@ -241,14 +238,20 @@ def text2paragraph(text):
     else:
         desc = t
 
-    desc = replace_with_emoji(desc, style_desc.fontSize)
-    if desc.find("\n")!=-1:
-        d = desc.split("\n")
+    desc_emoji = replace_with_emoji(desc, style_desc.fontSize)
+    if desc_emoji.find("\n")!=-1:
+        d = desc_emoji.split("\n")
         d[0] = "<u>" + d[0] + "</u>"
-        desc = "<br />".join(d)
-
-    p_desc = Paragraph(desc, style_desc)
-
+        desc_emoji = "<br />".join(d)
+    
+    lines_desc = simpleSplit(desc, 'Helvetica', 12, 6.5*cm)
+    lines_effect = simpleSplit(effect, 'Helvetica', 12, 6.5*cm)
+    
+    lineSpacing = 3.88*cm/(len(lines_desc) + len(lines_effect)) - 3
+    style_desc.leading = lineSpacing
+              
+    p_desc = Paragraph(desc_emoji, style_desc)
+    
     r.append(p_desc)
     if p_effect:
         r.append(p_effect)
