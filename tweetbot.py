@@ -116,7 +116,7 @@ while True:
                 else:
                     print('\nBot found tweet by @' + tweet.user.screen_name + '. ' + 'Attempting to respond.')
                     # t = process_text(tweet)
-                    for i in range(0,100):
+                    for i in range(0,20):
                         while True:
                             try: 
                                 t = text2paragraph(tweet.full_text)

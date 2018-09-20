@@ -205,7 +205,7 @@ def text2paragraph(text):
     t = re.sub("(?i)@truworldcontrol", "", t)
     t = re.sub("(?i)#fakenewz", "", t)
     t = t.strip()
-    '\n'.join([x for x in t.splitlines() if x.strip()])
+    t = '\n'.join([x for x in t.splitlines() if x.strip()])
     # t = worldcontrol[2].text
     
     style_desc = getSampleStyleSheet()
@@ -235,7 +235,7 @@ def text2paragraph(text):
         effect = t[t.find("[")+1:t.find("]")].upper()
         effect_emoji = replace_arrows(effect)
         effect_emoji = replace_icon_names(effect_emoji)
-        effect_emoji = replace_emoji(effect, style_effect)
+        effect_emoji = replace_emoji(effect_emoji, style_effect)
         effect_emoji = effect_emoji.replace("\n", "<br />")
         p_effect = Paragraph(effect_emoji, style_effect)
     else:
