@@ -205,6 +205,7 @@ def text2paragraph(text):
     t = re.sub("(?i)@truworldcontrol", "", t)
     t = re.sub("(?i)#fakenewz", "", t)
     t = t.strip()
+    '\n'.join([x for x in t.splitlines() if x.strip()])
     # t = worldcontrol[2].text
     
     style_desc = getSampleStyleSheet()
@@ -232,13 +233,15 @@ def text2paragraph(text):
     if t.find("[")!=-1:
         desc = t[0:t.find("[")].strip()
         effect = t[t.find("[")+1:t.find("]")].upper()
+        effect_emoji = replace_arrows(effect)
+        effect_emoji = replace_icon_names(effect_emoji)
         effect_emoji = replace_emoji(effect, style_effect)
         effect_emoji = effect_emoji.replace("\n", "<br />")
         p_effect = Paragraph(effect_emoji, style_effect)
     else:
         desc = t
 
-    desc_emoji = replace_with_emoji(desc, style_desc.fontSize)
+    desc_emoji = replace_emoji(desc, style_desc)
     if desc_emoji.find("\n")!=-1:
         d = desc_emoji.split("\n")
         d[0] = "<u>" + d[0] + "</u>"
@@ -258,14 +261,7 @@ def text2paragraph(text):
 
     return(r)
 
-def replace_emoji(effect, style):
-    # t = text.encode('unicode-escape')
-    # Würfel Icon
-    # Figure icon
-    # Alle bauen/roten icons für general/sage
-    # Replace text
-    # TODO Case insensitive
-
+def replace_arrows(effect):
     effect = effect.replace("<", u"<img src='images/arrow_left.png' valign='middle' width = '15' height = '15' />")
     effect = effect.replace("&lt;", u"<img src='images/arrow_left.png' valign='middle' width = '15' height = '15' />")
     effect = effect.replace("&LT;", u"<img src='images/arrow_left.png' valign='middle' width = '15' height = '15' />")
@@ -274,11 +270,21 @@ def replace_emoji(effect, style):
     effect = effect.replace("&gt;", u"<img src='images/arrow_right.png' valign='middle' width = '15' height = '15' />")
     effect = effect.replace("&GT;", u"<img src='images/arrow_right.png' valign='middle' width = '15' height = '15' />")
 
+def replace_icon_names(effect):
     icon = ['arms', 'oil', 'airlift', 'airstrike', 'skull', 'bio', 'gold', 'chem', 'tech', 'sage', 'general', 'yollo', 'corpz']
     for i in icon:
         effect = re.sub("(?i)" + i, i, effect)
         if effect.find(i)!=-1:
             effect = effect.replace(i, u"<img src='images/{filename}.png' valign='middle' width = '20' height = '20' />".format(filename = i))
+
+
+def replace_emoji(effect, style):
+    # t = text.encode('unicode-escape')
+    # Würfel Icon
+    # Figure icon
+    # Alle bauen/roten icons für general/sage
+    # Replace text
+    # TODO Case insensitive
 
     try:
         t = emoji_unicode.replace(
@@ -294,7 +300,7 @@ def replace_emoji(effect, style):
 #            lambda e: u"<font name=Symbola>{raw}</font>".format(raw=e.unicode)
 #        )
         # t = replace_with_emoji_pdf(Emoji.to_image(text), style.fontSize)
-        t = replace_with_emoji(effect, style.fontSize)
+    t = replace_with_emoji(effect, style.fontSize)
     return(t)
 
 # Pdf doesn't need any unicode inside <image>'s alt attribute
@@ -312,6 +318,17 @@ def replace_with_emoji(effect, size):
             e += Emoji.to_image(c)
         else:
             e += c
+    
+#    e = effect
+#    for item in sorted(emoji.UNICODE_EMOJI.keys(), key = len, reverse = True):
+#        if item in effect:
+#            print(item)
+#            if Emoji.to_image(item) != item:
+#                e = re.sub(item, Emoji.to_image(item), e)
+#        print(item)
+#        Emoji.to_image(c)
+#        e = re.sub(re.escape(item), re.escape(emoji.UNICODE_EMOJI[item]), e)
+    
     e = e.replace('class="emojione " style="" ', 'height=%s width=%s' %
                         (size, size))
     return re.sub('alt="'+Emoji.shortcode_regexp+'"', '', e)
