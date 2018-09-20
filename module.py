@@ -269,6 +269,8 @@ def replace_arrows(effect):
     effect = effect.replace(">", u"<img src='images/arrow_right.png' valign='middle' width = '15' height = '15' />")
     effect = effect.replace("&gt;", u"<img src='images/arrow_right.png' valign='middle' width = '15' height = '15' />")
     effect = effect.replace("&GT;", u"<img src='images/arrow_right.png' valign='middle' width = '15' height = '15' />")
+    
+    return(effect)
 
 def replace_icon_names(effect):
     icon = ['arms', 'oil', 'airlift', 'airstrike', 'skull', 'bio', 'gold', 'chem', 'tech', 'sage', 'general', 'yollo', 'corpz']
@@ -276,6 +278,7 @@ def replace_icon_names(effect):
         effect = re.sub("(?i)" + i, i, effect)
         if effect.find(i)!=-1:
             effect = effect.replace(i, u"<img src='images/{filename}.png' valign='middle' width = '20' height = '20' />".format(filename = i))
+    return(effect)
 
 
 def replace_emoji(effect, style):
