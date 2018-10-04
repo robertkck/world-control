@@ -240,7 +240,7 @@ def text2paragraph(text):
         p_effect = Paragraph(effect_emoji, style_effect)
     else:
         desc = t
-        effect = ''
+        effect = '_'
         p_effect = Paragraph(effect, style_effect)
         
 
