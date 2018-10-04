@@ -240,7 +240,9 @@ def text2paragraph(text):
         p_effect = Paragraph(effect_emoji, style_effect)
     else:
         desc = t
-        p_effect = Paragraph('', style_effect)
+        effect = ''
+        p_effect = Paragraph(effect, style_effect)
+        
 
     desc_emoji = replace_emoji(desc, style_desc)
     if desc_emoji.find("\n")!=-1:
