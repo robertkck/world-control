@@ -174,9 +174,9 @@ while True:
                             merger = PdfFileMerger()
                             merger.append('front.pdf')
                             merger.append('wc_news_A4_back.pdf')
-                            merger.write('wc_newz.pdf')
+                            merger.write('fakenewz.pdf')
                             # upload_pdf(["wc_newz.pdf", "twitter_history", "master.xlsx"], cwd)
-                            upload_ftp("wc_newz.pdf", ftp_user, ftp_password)
+                            upload_ftp("fakenewz.pdf", ftp_user, ftp_password)
                             # tweet.retweet("Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf")
                             # m = "@%s Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf" % (tweet.user.screen_name)
                             # Google Drive: https://docs.google.com/gview?url=https://github.com/robertkck/world-control/raw/master/world-control.pdf
@@ -184,7 +184,8 @@ while True:
                             # Shortened Google Drive: https://goo.gl/8xBSZn
                             # 000: https://bit.ly/2xgnGaJ
                             # 000: https://goo.gl/fdVavF
-                            m = "@%s BREAKING 🗞️: Find your #fakenewz ready for mass production here: world-control.net/pages/latest-newz" % (tweet.user.screen_name)
+                            # m = "@%s BREAKING 🗞️: Find your #fakenewz ready for mass production here: world-control.net/pages/latest-newz" % (tweet.user.screen_name)
+                            m = '@%s спасибо, i‘ll make your „news“ come tru! and so can you: PRINT > world-control.net/pages/latest-newz' % (tweet.user.screen_name)
                             print(m)
                             api.update_status(m, tweet.id)
                             # with open('outfile', 'wb') as fp:

@@ -240,6 +240,7 @@ def text2paragraph(text):
         p_effect = Paragraph(effect_emoji, style_effect)
     else:
         desc = t
+        p_effect = Paragraph('', style_effect)
 
     desc_emoji = replace_emoji(desc, style_desc)
     if desc_emoji.find("\n")!=-1:
@@ -295,6 +296,7 @@ def replace_emoji(effect, style):
             # lambda e: u"<img src='images/{filename}.svg' valign='middle' width = '20' height = '20' alt= '{raw}' />".format(filename=emoji_dict[e.code_points], raw=e.unicode)
             lambda e: u"<img src='images/{filename}.png' valign='middle' width = '20' height = '20' />".format(filename=emoji_dict[e.code_points])
         )
+        t = replace_with_emoji(t, style.fontSize)
     except KeyError:
         print("Key Error")
 #        t = emoji_unicode.replace(
@@ -303,7 +305,7 @@ def replace_emoji(effect, style):
 #            lambda e: u"<font name=Symbola>{raw}</font>".format(raw=e.unicode)
 #        )
         # t = replace_with_emoji_pdf(Emoji.to_image(text), style.fontSize)
-    t = replace_with_emoji(effect, style.fontSize)
+        t = replace_with_emoji(effect, style.fontSize)
     return(t)
 
 # Pdf doesn't need any unicode inside <image>'s alt attribute
