@@ -68,16 +68,17 @@ emoji_dict = {
         "1f6e2":"oil",  "26fd":"oil",
         "1f6e9":"air", "2708":"air", "1f6eb":"airstrike", "1f6ec":"airlift",
         "1f480":"skull", "2620":"skull",
-        '1f335':'bio', '1f333':'bio', 'f330 ':'bio', 'f95c ':'bio', 'f344 ':'bio', 'f966 ':'bio', 'f952 ':'bio', 'f336 ':'bio', 'f33d ':'bio', 'f955 ':'bio', 'f954 ':'bio', 'f346 ':'bio', 'f951 ':'bio', 'f965 ':'bio', 'f345 ':'bio', 'f95d ':'bio', 'f353 ':'bio', 'f352 ':'bio', 'f351 ':'bio', 'f350 ':'bio', 'f34f ':'bio', 'f34e ':'bio', 'f34d ':'bio', 'f34c ':'bio', 'f34b ':'bio', 'f34a ':'bio', 'f349 ':'bio', 'f348 ':'bio', 'f347 ':'bio',
+        '1f335':'bio', '1f333':'bio', 'f330 ':'bio', 'f95c ':'bio', 'f344 ':'bio', 'f966 ':'bio', 'f952 ':'bio', 'f336 ':'bio', 'f33d ':'bio', 'f955 ':'bio', 'f954 ':'bio', 'f346 ':'bio', 'f951 ':'bio', 'f965 ':'bio', 'f345 ':'bio', 'f95d ':'bio', 'f353 ':'bio', 'f352 ':'bio', 'f351 ':'bio', 'f350 ':'bio', 'f34f ':'bio', 'f34e ':'bio', 'f34d ':'bio', 'f34c ':'bio', 'f34b ':'bio', 'f34a ':'bio', 'f349 ':'bio', 'f348 ':'bio', 'f347':'bio', '1f966':'bio',
+        '1f951':'bio', '1f346':'bio', '1f954':'bio', '1f955':'bio', '1f33d':'bio', '1f336':'bio', '1f952':'bio', '1f96c':'bio', '1f966':'bio', '1f344':'bio', '1f95c':'bio', '1f330':'bio', '1f347':'bio', '1f348':'bio', '1f349':'bio', '1f34a':'bio', '1f34b':'bio', '1f34c':'bio', '1f34d':'bio', '1f96d':'bio', '1f34e':'bio', '1f34f':'bio', '1f350':'bio', '1f351':'bio', '1f352':'bio', '1f353':'bio', '1f95d':'bio', '1f345':'bio', '1f965':'bio', '1f331':'bio', '1f332':'bio', '1f333':'bio', '1f334':'bio', '1f335':'bio', '1f33e':'bio', '1f33f':'bio', '2618':'bio', '1f340':'bio', '1f341':'bio', '1f342':'bio', '1f343':'bio', '1f490':'bio', '1f338':'bio', '1f4ae':'bio', '1f3f5':'bio', '1f339':'bio', '1f940':'bio', '1f33a':'bio', '1f33b':'bio', '1f33c':'bio', '1f337':'bio', '1f9a0':'bio',
         '1f3c6':'gold', '1f947':'gold', '1f3c5':'gold', '1f396':'gold', '1f3f5':'gold', '1f4b0':'gold', '1f48e':'gold',
         '1f48a':'chem', '2697':'chem', '1f321':'chem', '1f489':'chem', '2623':'chem', '2622':'chem',
         '1f579':'tech', '1f4f1':'tech', '1f4f2':'tech', '1f4be':'tech', '1f4bd':'tech', '1f4bb':'tech', '1f39a':'tech', '2699':'tech', 'fe0f':'tech',
         '1f468-200d-1f393':'sage', '1f469-200d-1f393':'sage', '1f9d9-200d-2642':'sage', '1f9d9-200d-2640':'sage','1f535':'sage',
         '1f534':'general', '1f468-200d-2708':'general', '1f469-200d-2708':'general', '1f46e':'general',
         '1f4b2':'yollo', '1f4b4':'yollo', '1f4b3':'yollo', '1f4b6':'yollo', '1f4b7':'yollo', '1f4b5':'yollo', '1f4b8':'yollo',
-        '1f468-200d-1f468-200d-1f466-200d-1f466':'corpz', '1f690':'corpz', '1f463':'corpz', '1f691':'corpz', '1f69b':'corpz', '1f697':'corpz', '1f68c':'corpz', '1f69a':'corpz', '1f68d':'corpz', '1f68e':'corpz'
+        '1f468-200d-1f468-200d-1f466-200d-1f466':'corpz', '1f690':'corpz', '1f463':'corpz', '1f691':'corpz', '1f69b':'corpz', '1f697':'corpz', '1f68c':'corpz', '1f69a':'corpz', '1f68d':'corpz', '1f68e':'corpz', '1f696':'corpz',
+        '1f682':'corpz', '1f683':'corpz', '1f684':'corpz', '1f685':'corpz', '1f686':'corpz', '1f687':'corpz', '1f688':'corpz', '1f689':'corpz', '1f68a':'corpz', '1f69d':'corpz', '1f69e':'corpz', '1f68b':'corpz', '1f68c':'corpz', '1f68d':'corpz', '1f68e':'corpz', '1f690':'corpz', '1f691':'corpz', '1f692':'corpz', '1f693':'corpz', '1f694':'corpz', '1f695':'corpz', '1f696':'corpz', '1f697':'corpz', '1f698':'corpz', '1f699':'corpz', '1f69a':'corpz', '1f69b':'corpz', '1f69c':'corpz', '1f3ce':'corpz', '1f3cd':'corpz', '1f6f5':'corpz', '1f6b2':'corpz', '1f6f4':'corpz', '1f6f9':'corpz'
 }
-
 
 
 #def fetch_sheet():
