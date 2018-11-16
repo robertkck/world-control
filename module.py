@@ -21,6 +21,8 @@ import emoji
 from emojipy import Emoji
 import re
 from ftplib import FTP
+import smtplib
+from email.message import EmailMessage
 
 
 # from googleapiclient.discovery import build
@@ -109,12 +111,6 @@ emoji_dict = {
 
 
 def upload_pdf(file_list, repo_path):
-    # Use ftp instead
-    # session = ftplib.FTP('example.com','username','password')
-    # file = open('cup.mp4','rb')                  # file to send
-    # session.storbinary('STOR '+'cup.mp4', file)     # send the file
-    # file.close()                                    # close file and FTP
-    # session.quit()
     repo = Repo(repo_path)
     commit_message = 'Add new pdf'
     repo.index.add(file_list)
@@ -123,7 +119,6 @@ def upload_pdf(file_list, repo_path):
     origin.push('master')
 
 def upload_ftp(filename, ftp_user, ftp_password):
-    #domain name or server ip:
     ftp = FTP('files.000webhost.com')
     print(ftp.login(user=ftp_user, passwd = ftp_password))
     print(ftp.storbinary('STOR '+ 'public_html/web/' + filename, open(filename, 'rb')))
@@ -346,3 +341,17 @@ def print_emoji_dict(emoji_dict = emoji_dict):
         for j in i.split('-'):
             print(chr(int(j, 16)))
             # sval("u" + "'{}'".format(n))
+            
+def send_email(email_address, email_password, error = 'None'):
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.ehlo()
+    server.starttls()
+    server.login(email_address, email_password)
+    msg = EmailMessage()
+    msg['Subject'] = 'Father, I failed you'
+    msg['From'] = email_address
+    msg['To'] = "robert_kck@hotmail.com"
+    msg.set_content(error)
+    server.send_message(msg)
+    server.quit()
+    print('Email sent')

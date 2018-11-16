@@ -26,32 +26,7 @@ from key import *
 from module import *
 import os
 cwd = os.getcwd()
-
-### Send Email notification
-
-# import logging
-# import logging.handlers
-# import smtplib 
-#
-#smtpObj = smtplib.SMTP('http://smtp.gmail.com', 587) 
-#smtpObj.starttls()
-#smtpObj.login('pronks@example.com', 'MY_PASSWORD')
-#smtpObj.sendmail('pronKs@example.com', 'quora@example.com', 'Subject: So long.\nDear kruelT, Go to sleep bitch. Sincerely, pronKs')
-#smtpObj.quit()
-#    
-#smtp_handler = logging.handlers.SMTPHandler(mailhost=("smtp.gmail.com", 25),
-#                                            fromaddr="ministervlatin@gmail.com", 
-#                                            toaddrs="robert.kalcik@gmail.com",
-#                                            subject=u"Master, I have failed you!")
-#
-#
-#logger = logging.getLogger()
-#logger.addHandler(smtp_handler)
-#
-#try:
-#    a+1
-#except Exception as e:
-#    logger.exception('Unhandled Exception')
+import traceback
 
 ### Register Font
 
@@ -158,14 +133,6 @@ while True:
                         merger.write('fakenewz.pdf')
                         # upload_pdf(["wc_newz.pdf", "twitter_history", "master.xlsx"], cwd)
                         upload_ftp("fakenewz.pdf", ftp_user, ftp_password)
-                        # tweet.retweet("Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf")
-                        # m = "@%s Hello! Find your card ready for print here: https://github.com/robertkck/world-control/raw/master/world-control.pdf" % (tweet.user.screen_name)
-                        # Google Drive: https://docs.google.com/gview?url=https://github.com/robertkck/world-control/raw/master/world-control.pdf
-                        # Bitly: https://bit.ly/2PtbTN0
-                        # Shortened Google Drive: https://goo.gl/8xBSZn
-                        # 000: https://bit.ly/2xgnGaJ
-                        # 000: https://goo.gl/fdVavF
-                        # m = "@%s BREAKING 🗞️: Find your #fakenewz ready for mass production here: world-control.net/pages/latest-newz" % (tweet.user.screen_name)
                         m = '@%s спасибо, i‘ll make your „news“ come tru! and so can you: PRINT > world-control.net/pages/latest-newz' % (tweet.user.screen_name)
                         print(m)
                         api.update_status(m, tweet.id)
@@ -175,13 +142,18 @@ while True:
                     except tweepy.TweepError as error:
                         print('\nError. Retweet not successful. Reason: ')
                         print(error.reason)
-                        
+                        send_email(email_address, email_password, error.reason)
                     except StopIteration:
                         break
+                    except:
+                        error = traceback.format_exc()
+                        send_email(email_address, email_password, error)
+                        raise
                 since_id = twitter_history[0]['id']
     except tweepy.TweepError as error:
             print('\nError. Retweet not successful. Reason: ')
             print(error.reason)
+            send_email(email_address, email_password, error.reason)
             
     print("You keep me waiting waiting waiting for an answer")
     time.sleep(30)
