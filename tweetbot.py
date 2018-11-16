@@ -96,6 +96,8 @@ while True:
                     df = df.append(twitter_history[0], ignore_index = True)
                     # df.to_csv('master.csv', encoding = 'utf-8')
                     df.to_excel('master.xlsx')
+                    ### Alternatively (and better)
+                    # pd.io.json.json_normalize(twitter_history)
                     try:
                         print('\nBot found tweet by @' + tweet.user.screen_name + '. ' + 'Attempting to respond.')
                         # t = process_text(tweet)
