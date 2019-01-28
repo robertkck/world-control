@@ -136,7 +136,7 @@ while True:
                         # upload_pdf(["wc_newz.pdf", "twitter_history", "master.xlsx"], cwd)
                         upload_ftp("fakenewz.pdf", ftp_user, ftp_password)
                         m = '@%s спасибо, i‘ll make your „news“ come tru! and so can you: PRINT > world-control.net/pages/latest-newz' % (tweet.user.screen_name)
-                        print(m)
+                        #print(m)
                         api.update_status(m, tweet.id)
                         # with open('outfile', 'wb') as fp:
                         #         pickle.dump(_l, fp)
