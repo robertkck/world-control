@@ -89,7 +89,7 @@ while True:
                 elif "#fakenewz" not in tweet.full_text:
                     print("Tweet does not include the #fakenewz Hashtag")
                 else: 
-                    print("new tweet found: " + tweet.full_text)
+                    print("new tweet found")
                     twitter_history.insert(0, tweet._json)
                     with open('twitter_history', 'wb') as fp:
                             pickle.dump(twitter_history, fp)
