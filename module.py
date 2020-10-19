@@ -4,7 +4,7 @@ Created on Fri Aug  3 15:07:43 2018
 
 @author: KalcikR
 """
-from git import Repo
+# from git import Repo
 import textwrap
 from reportlab.graphics import shapes
 from reportlab.lib.colors import PCMYKColor, PCMYKColorSep, Color, black, blue, red, transparent
@@ -20,7 +20,7 @@ import emoji_unicode
 import emoji
 from emojipy import Emoji
 import re
-from ftplib import FTP
+# from ftplib import FTP
 import smtplib
 from email.message import EmailMessage
 
@@ -110,19 +110,19 @@ emoji_dict = {
 #            print('%s, %s' % (row[0], row[4]))
 
 
-def upload_pdf(file_list, repo_path):
-    repo = Repo(repo_path)
-    commit_message = 'Add new pdf'
-    repo.index.add(file_list)
-    repo.index.commit(commit_message)
-    origin = repo.remote('origin')
-    origin.push('master')
+# def upload_pdf(file_list, repo_path):
+#     repo = Repo(repo_path)
+#     commit_message = 'Add new pdf'
+#     repo.index.add(file_list)
+#     repo.index.commit(commit_message)
+#     origin = repo.remote('origin')
+#     origin.push('master')
 
-def upload_ftp(filename, ftp_user, ftp_password):
-    ftp = FTP('files.000webhost.com')
-    print(ftp.login(user=ftp_user, passwd = ftp_password))
-    print(ftp.storbinary('STOR '+ 'public_html/web/' + filename, open(filename, 'rb')))
-    ftp.quit()
+# def upload_ftp(filename, ftp_user, ftp_password):
+#     ftp = FTP('files.000webhost.com')
+#     print(ftp.login(user=ftp_user, passwd = ftp_password))
+#     print(ftp.storbinary('STOR '+ 'public_html/web/' + filename, open(filename, 'rb')))
+#     ftp.quit()
 
 def scale(drawing, scaling_factor):
     """
