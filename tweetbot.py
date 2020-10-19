@@ -27,6 +27,7 @@ from module import *
 import os
 cwd = os.getcwd()
 import traceback
+from shutil import copyfile
 
 ### Register Font
 
@@ -134,7 +135,9 @@ while True:
                         merger.append('wc_news_A4_back.pdf')
                         merger.write('fakenewz.pdf')
                         # upload_pdf(["wc_newz.pdf", "twitter_history", "master.xlsx"], cwd)
-                        upload_ftp("fakenewz.pdf", ftp_user, ftp_password)
+                        #upload_ftp("fakenewz.pdf", ftp_user, ftp_password)
+                        copyfile("fakenewz.pdf", "/var/www/html/fakenewz.pdf")
+
                         m = '@%s спасибо, i‘ll make your „news“ come tru! and so can you: PRINT > world-control.net/pages/latest-newz' % (tweet.user.screen_name)
                         #print(m)
                         api.update_status(m, tweet.id)
