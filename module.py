@@ -23,6 +23,13 @@ import re
 # from ftplib import FTP
 import smtplib
 from email.message import EmailMessage
+import logging
+import os
+import tweepy
+from key import *
+
+
+logger = logging.getLogger()
 
 
 # from googleapiclient.discovery import build
@@ -70,8 +77,8 @@ emoji_dict = {
         "1f6e2":"oil",  "26fd":"oil",
         "1f6e9":"air", "2708":"air", "1f6eb":"airstrike", "1f6ec":"airlift",
         "1f480":"skull", "2620":"skull",
-        '1f335':'bio', '1f333':'bio', 'f330 ':'bio', 'f95c ':'bio', 'f344 ':'bio', 'f966 ':'bio', 'f952 ':'bio', 'f336 ':'bio', 'f33d ':'bio', 'f955 ':'bio', 'f954 ':'bio', 'f346 ':'bio', 'f951 ':'bio', 'f965 ':'bio', 'f345 ':'bio', 'f95d ':'bio', 'f353 ':'bio', 'f352 ':'bio', 'f351 ':'bio', 'f350 ':'bio', 'f34f ':'bio', 'f34e ':'bio', 'f34d ':'bio', 'f34c ':'bio', 'f34b ':'bio', 'f34a ':'bio', 'f349 ':'bio', 'f348 ':'bio', 'f347':'bio', '1f966':'bio',
-        '1f951':'bio', '1f346':'bio', '1f954':'bio', '1f955':'bio', '1f33d':'bio', '1f336':'bio', '1f952':'bio', '1f96c':'bio', '1f966':'bio', '1f344':'bio', '1f95c':'bio', '1f330':'bio', '1f347':'bio', '1f348':'bio', '1f349':'bio', '1f34a':'bio', '1f34b':'bio', '1f34c':'bio', '1f34d':'bio', '1f96d':'bio', '1f34e':'bio', '1f34f':'bio', '1f350':'bio', '1f351':'bio', '1f352':'bio', '1f353':'bio', '1f95d':'bio', '1f345':'bio', '1f965':'bio', '1f331':'bio', '1f332':'bio', '1f333':'bio', '1f334':'bio', '1f335':'bio', '1f33e':'bio', '1f33f':'bio', '2618':'bio', '1f340':'bio', '1f341':'bio', '1f342':'bio', '1f343':'bio', '1f490':'bio', '1f338':'bio', '1f4ae':'bio', '1f3f5':'bio', '1f339':'bio', '1f940':'bio', '1f33a':'bio', '1f33b':'bio', '1f33c':'bio', '1f337':'bio', '1f9a0':'bio',
+        '1f335':'bio', '1f333':'bio', 'f330 ':'bio', 'f95c ':'bio', 'f344 ':'bio', 'f966 ':'bio', 'f952 ':'bio', 'f336 ':'bio', 'f33d ':'bio', 'f955 ':'bio', 'f954 ':'bio', 'f346 ':'bio', 'f951 ':'bio', 'f965 ':'bio', 'f345 ':'bio', 'f95d ':'bio', 'f353 ':'bio', 'f352 ':'bio', 'f351 ':'bio', 'f350 ':'bio', 'f34f ':'bio', 'f34e ':'bio', 'f34d ':'bio', 'f34c ':'bio', 'f34b ':'bio', 'f34a ':'bio', 'f349 ':'bio', 'f348 ':'bio', 'f347':'bio', 
+        '1f951':'bio', '1f346':'bio', '1f954':'bio', '1f955':'bio', '1f33d':'bio', '1f336':'bio', '1f952':'bio', '1f96c':'bio', '1f966':'bio', '1f344':'bio', '1f95c':'bio', '1f330':'bio', '1f347':'bio', '1f348':'bio', '1f349':'bio', '1f34a':'bio', '1f34b':'bio', '1f34c':'bio', '1f34d':'bio', '1f96d':'bio', '1f34e':'bio', '1f34f':'bio', '1f350':'bio', '1f351':'bio', '1f352':'bio', '1f353':'bio', '1f95d':'bio', '1f345':'bio', '1f965':'bio', '1f331':'bio', '1f332':'bio',  '1f334':'bio', '1f33e':'bio', '1f33f':'bio', '2618':'bio', '1f340':'bio', '1f341':'bio', '1f342':'bio', '1f343':'bio', '1f490':'bio', '1f338':'bio', '1f4ae':'bio', '1f3f5':'bio', '1f339':'bio', '1f940':'bio', '1f33a':'bio', '1f33b':'bio', '1f33c':'bio', '1f337':'bio', '1f9a0':'bio',
         '1f3c6':'gold', '1f947':'gold', '1f3c5':'gold', '1f396':'gold', '1f3f5':'gold', '1f4b0':'gold', '1f48e':'gold',
         '1f48a':'chem', '2697':'chem', '1f321':'chem', '1f489':'chem', '2623':'chem', '2622':'chem',
         '1f579':'tech', '1f4f1':'tech', '1f4f2':'tech', '1f4be':'tech', '1f4bd':'tech', '1f4bb':'tech', '1f39a':'tech', '2699':'tech', 'fe0f':'tech',
@@ -355,3 +362,22 @@ def send_email(email_address, email_password, error = 'None'):
     server.send_message(msg)
     server.quit()
     print('Email sent')
+
+
+def create_api():
+    consumer_key = CONSUMER_KEY_WC # os.getenv("CONSUMER_KEY_WC")
+    consumer_secret = CONSUMER_SECRET_WC # os.getenv("CONSUMER_SECRET_WC")
+    access_token = ACCESS_KEY_WC # os.getenv("ACCESS_TOKEN_WC")
+    access_token_secret = ACCESS_SECRET_WC # os.getenv("ACCESS_TOKEN_SECRET_WC")
+    
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth, wait_on_rate_limit=True, 
+        wait_on_rate_limit_notify=True)
+    try:
+        api.verify_credentials()
+    except Exception as e:
+        logger.error("Error creating API", exc_info=True)
+        raise e
+    logger.info("API created")
+    return api
