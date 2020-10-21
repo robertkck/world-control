@@ -85,7 +85,7 @@ while True:
             print("No new tweet")
         else:
             for tweet in tweepy.Cursor(api.search, q='@truWorldControl', since_id = since_id, tweet_mode='extended').items(5):
-                if (tweet.retweeted) or ('RT @' not in tweet.full_text):
+                if (tweet.retweeted) or ('RT @' in tweet.full_text):
                     print("new tweet is a retweet")
                 elif "#fakenewz" not in tweet.full_text:
                     print("Tweet does not include the #fakenewz Hashtag")
