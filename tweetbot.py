@@ -48,13 +48,8 @@ def coord(x, y, unit=1):
 
 # "💶".encode('unicode-escape')
 
-# Authenticate bo
-auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
-api = tweepy.API(auth)
-if (not api):
-    print ("Can't Authenticate")
-    sys.exit(-1)
+# Authenticate
+api = create_api("@MinisterVlatin")
 
 with open ('twitter_history', 'rb') as fp:
     twitter_history = pickle.load(fp)
