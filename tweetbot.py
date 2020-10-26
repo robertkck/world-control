@@ -30,6 +30,8 @@ import traceback
 from shutil import copyfile
 import logging
 import time
+import requests
+import json
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -120,25 +122,32 @@ def extend_db(tweet, df, twitter_history):
     df = df.append(twitter_history[0], ignore_index = True)
     df.to_excel('master.xlsx')
 
+def post_message_to_slack(text, blocks = None):
+    return requests.post('https://slack.com/api/chat.postMessage', {
+        'token': slack_token,
+        'channel': slack_channel,
+        'text': text,
+        # 'icon_url': slack_icon_url,
+        'username': slack_user_name,
+        'blocks': json.dumps(blocks) if blocks else None
+    }).json()	
+
 def check_mentions(api, since_id):
     logger.info("Retrieving mentions")
     new_since_id = since_id
     for tweet in tweepy.Cursor(api.search, q='@truWorldControl -filter:retweets', since_id = since_id, tweet_mode='extended').items(): # api.mentions_timeline, since_id=since_id).items():
         new_since_id = max(tweet.id, new_since_id)
+
         if tweet.in_reply_to_status_id is not None:
             logger.info("Tweet is a reply")
             continue
+
         if (tweet.retweeted) or ('RT @' in tweet.full_text):
             logger.info("Tweet is a retweet")
             continue
-        # if Minister has not yet responded
-        # if any(keyword in tweet.full_text.lower() for keyword in keywords):
+
         if "#fakenewz" not in tweet.full_text:
             logger.info("Tweet does not contain #fakenewz")
-            continue
-
-        if "спасибо" in tweet.full_text:
-            logger.info("Caught a response")
             continue
 
         logger.info(f"Bot found tweet by @{tweet.user.screen_name}. Attempting to respond.")
@@ -159,7 +168,18 @@ def main(since_id):
     api = create_api()
     # since_id = 1
     while True:
-        since_id = check_mentions(api, since_id)
+        try:
+            since_id = check_mentions(api, since_id)
+        except tweepy.TweepError as error:
+            logger.info(f'Error. Retweet not successful. Reason: {error.reason}')
+            post_message_to_slack(f"Father, I failed you: {error.reason} @Robert")		
+        except Exception as error:
+            logger.error("Error. Retweet not successful.", exc_info=True)
+            post_message_to_slack(f"Father, I failed you:{error.reason}, @Robert")
+        except:
+            error = traceback.format_exc()
+            post_message_to_slack(f"Father, I failed you:{error.reason}, @Robert")
+            raise
         logger.info("Waiting...")
         time.sleep(10)
 
