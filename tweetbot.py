@@ -78,7 +78,8 @@ specs = labels.Specification(297, 210, 5, 5, 59, 38.8, corner_radius=0, top_marg
 since_id = twitter_history[0]['id']
 
 
-def create_pdf(tweet, _l):
+def create_pdf(tweet):
+    global _l
     logger.info("Create PDF")
     # t = process_text(tweet)
     for i in range(0,20):
@@ -114,7 +115,9 @@ def create_pdf(tweet, _l):
     #upload_ftp("fakenewz.pdf", ftp_user, ftp_password)
     copyfile("fakenewz.pdf", "/var/www/html/fakenewz.pdf")
 
-def extend_db(tweet, df, twitter_history):
+def extend_db(tweet):
+    global df
+    global twitter_history
     logger.info("Extending DB")
     twitter_history.insert(0, tweet._json)
     with open('twitter_history', 'wb') as fp:
@@ -155,10 +158,8 @@ def check_mentions(api, since_id):
         if not tweet.user.following and not tweet.user.id == 1017118454711771136:
             tweet.user.follow()
             
-        # TODO: Double check that the global df gets altered. Second tweet also includes changes from first?
-        extend_db(tweet, df, twitter_history)
-        # TODO: Double check that the global _l gets altered. Second tweet also includes changes from first?
-        create_pdf(tweet, _l)
+        extend_db(tweet)
+        create_pdf(tweet)
         logger.info("Respond")
         m = '@%s спасибо, i‘ll make your „news“ come tru! and so can you: PRINT > world-control.net/pages/latest-newz' % (tweet.user.screen_name)
         api.update_status(m, tweet.id)
@@ -175,10 +176,10 @@ def main(since_id):
             post_message_to_slack(f"Father, I failed you: {error.reason} @Robert")		
         except Exception as error:
             logger.error("Error. Retweet not successful.", exc_info=True)
-            post_message_to_slack(f"Father, I failed you:{error.reason}, @Robert")
+            post_message_to_slack(f"Father, I failed you:{error}, @Robert")
         except:
             error = traceback.format_exc()
-            post_message_to_slack(f"Father, I failed you:{error.reason}, @Robert")
+            post_message_to_slack(f"Father, I failed you:{error}, @Robert")
             raise
         logger.info("Waiting...")
         time.sleep(10)
