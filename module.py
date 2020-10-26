@@ -364,12 +364,21 @@ def send_email(email_address, email_password, error = 'None'):
     print('Email sent')
 
 
-def create_api():
-    consumer_key = CONSUMER_KEY_WC # os.getenv("CONSUMER_KEY_WC")
-    consumer_secret = CONSUMER_SECRET_WC # os.getenv("CONSUMER_SECRET_WC")
-    access_token = ACCESS_KEY_WC # os.getenv("ACCESS_TOKEN_WC")
-    access_token_secret = ACCESS_SECRET_WC # os.getenv("ACCESS_TOKEN_SECRET_WC")
+def create_api(account = "@MinisterVlatin"):
+    if account == "@truWorldControl":
+        consumer_key = CONSUMER_KEY_WC # os.getenv("CONSUMER_KEY_WC")
+        consumer_secret = CONSUMER_SECRET_WC # os.getenv("CONSUMER_SECRET_WC")
+        access_token = ACCESS_KEY_WC # os.getenv("ACCESS_TOKEN_WC")
+        access_token_secret = ACCESS_SECRET_WC # os.getenv("ACCESS_TOKEN_SECRET_WC")
+        print("Login for " + account)
     
+    if account == "@MinisterVlatin": 
+        consumer_key = CONSUMER_KEY # os.getenv("CONSUMER_KEY_WC")
+        consumer_secret = CONSUMER_SECRET # os.getenv("CONSUMER_SECRET_WC")
+        access_token = ACCESS_KEY # os.getenv("ACCESS_TOKEN_WC")
+        access_token_secret = ACCESS_SECRET # os.getenv("ACCESS_TOKEN_SECRET_WC")
+        print("Login for " + account)
+
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth, wait_on_rate_limit=True, 
@@ -379,5 +388,5 @@ def create_api():
     except Exception as e:
         logger.error("Error creating API", exc_info=True)
         raise e
-    logger.info("API created")
+    logger.info("API created for "+ account)
     return api
