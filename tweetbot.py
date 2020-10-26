@@ -157,7 +157,7 @@ def check_mentions(api, since_id):
 
 def main(since_id):
     api = create_api()
-    since_id = 1
+    # since_id = 1
     while True:
         since_id = check_mentions(api, since_id)
         logger.info("Waiting...")
