@@ -4,3 +4,4 @@ __pycache__
 token.json
 key.pyc
 client_secret.json
+.vscode/
